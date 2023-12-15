@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>side nav</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <aside id="sidenav-open">
+      <nav>
+        <h1>My</h1>
+        <a href="#">Dashboard</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Dashboard</a>
+      </nav>
+      <!--
+        onChange=history.go(-1) 避免在浏览器中留下记录
+        aria-label="Close Menu" 无障访问
+        href="#"
+       -->
+      <a
+        href="#"
+        id="sidenav-close"
+        title="Close Menu"
+        aria-label="Close Menu"
+        onChaneg="history.go(-1)"
+      ></a>
+    </aside>
+    <main>
+      <header>
+        <!--
+         -->
+        <a
+          href="#sidenav-open"
+          id="sidenav-button"
+          title="Open Menu"
+          aria-label="Open Menu"
+          class="hamburger"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-menu"
+          >
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </a>
+        <h1>Site Title</h1>
+      </header>
+      <article>
+        <h1>Totaoma Header</h1>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque,
+          consequatur odit inventore quas ea vel aliquid facilis illo provident
+          repudiandae ullam, cum incidunt temporibus? Nobis id quidem illum
+          facere quo?
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veniam dicta
+          quam distinctio delectus temporibus nemo unde amet magnam voluptas
+          cupiditate.
+        </p>
+        <h2>SubHeader</h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui facere
+          culpa optio voluptas asperiores nihil odit, consequuntur placeat
+          facilis. Deserunt?
+        </p>
+        <p>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Amet, esse
+          nulla excepturi est ducimus vero expedita sed quasi rerum qui.
+        </p>
+        <h3>Subheader</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis
+          est recusandae dignissimos sint quae facere dolorum quidem omnis
+          aliquam deleniti?
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut quis
+          similique necessitatibus vel? Molestiae fugiat minima maiores. Fuga,
+          non autem.
+        </p>
+      </article>
+    </main>
+    <script src="scripts.js"></script>
+  </body>
+</html>

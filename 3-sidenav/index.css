@@ -1,0 +1,245 @@
+/* 
+
+    一些初始设置
+*/
+:root {
+  --surface: lch(10 0 0);
+  --surface2: lch(20 0 0);
+  --text: lch(90 0 0);
+  --text2: lch(70 0 0);
+  --brandHSL: 328 100% 54%;
+
+  @media (prefers-color-scheme: light) {
+    --surface: lch(90 0 0);
+    --surface2: lch(100 0 0);
+    --text: lch(20 0 0);
+    --text2: lch(40 0 0);
+  }
+}
+
+body {
+  font-family: "BLOKK", system-ui;
+  margin: 0;
+  padding: 0;
+  background: var(--surface);
+  color: var(--text);
+}
+
+h1,h2,h3,h4,figure {
+  margin: 0;
+  color: var(--text);
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  max-inline-size: 30ch;
+}
+
+p {
+  line-height: 1.5;
+  color: var(--text2);
+  max-inline-size: 50ch;
+}
+
+a {
+  color: hsl(328 100% 74%);
+  outline-color: hsl(var(--brandHSL));
+  outline-offset: 5px;
+
+}
+
+a:hover {
+  color: hsl(var(--brandHSL));
+}
+
+
+
+
+
+
+
+
+
+
+
+body {
+    min-block-size: 100vh;
+    display: grid;
+    grid: [stack] 1fr / min-content [stack] 1fr;
+}
+
+/* 
+    设置aside#sidenav-open及其子元素的css
+*/
+
+#sidenav-open{
+    /*  自身默认位置 
+        网格第一行第一列
+        行高 max(100vh, 这一行元素的最大高度)
+        列宽 min-content
+        默认justify-items: stretch; align-items: stretch; （没有显式设置自身的宽度和高度)
+    */
+    
+    /* 对子元素布局 */
+    display: grid;
+    /* 其实这个布局主要对小屏幕有用，大屏幕其实只有一个子元素，且此时的宽度为min-content*/
+    grid-template-columns: [nav] 2fr [escape] 1fr;
+
+    /* 
+        设置一些变量用于过渡效果
+    */
+    --duration: .6s;
+    --easeOutExpo: cubic-bezier(0.16,1,0.3,1);
+}
+@media (prefers-reduced-motion: reduce) {
+    #sidenav-open {
+        --duration: 1ms;
+    }
+}
+
+@media (max-width: 540px) {
+    main, #sidenav-open {
+        grid-area: stack;
+    }
+
+    #sidenav-open {
+        position: sticky;
+        top: 0;
+        /*  此时不会被完全拉伸，最多到100vh
+            如果被完全拉伸，这里的sticky就没有什么效果了 
+        */
+        max-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+
+        /* 初始在屏幕外 */
+        transform: translateX(-110vh);
+        /* 不让屏幕外的元素 focus */
+        visibility: hiddden;
+
+        /* 
+            用于打开到关闭的动画设置
+            先移动，然后再隐藏（设置了延迟）
+        */
+        transition: transform var(--duration) var(--easeOutExpo), visibility 0s linear var(--duration);
+    }
+    /* 
+        当点击a[href="sidenav-open"]#sidenav-button时，该选择器被选中
+    */
+    #sidenav-open:target {
+      visibility: visible;
+      transform: translateX(0);
+
+      /* 
+        用于关闭到打开动画设置
+        直接可见
+      */
+      transition: transform var(--duration) var(--easeOutExpo);  
+    }
+}
+
+
+#sidenav-open nav {
+    /* 对子元素布局 */
+    display: flex;
+    flex-direction: column;
+    gap: 1ch;
+    
+    color: var(--text);
+    
+    padding: 2rem;
+}
+#sidenav-open nav a {
+    text-decoration: none;
+}
+@media (max-width: 540px) {
+    #sidenav-open nav {
+        background-color: var(--surface2);
+        border-inline-end: 1px  var(--surface1);
+        box-shadow: 5px 0px 40px rgba(0, 0, 0, 0.4);
+        font-size: 1.5rem;
+    }
+}
+
+
+
+/* 
+    对a#sidenav-close和a#sidenav-button实行移动优先布局
+*/
+@media(min-width: 540px) {
+    #sidenav-close, #sidenav-button {
+        display: none;
+    }
+}
+/* 
+
+    设置main及其子元素的css
+*/
+
+main {
+    padding: .5rem 1.5rem;
+}
+
+main > header {
+    /* 对子元素布局 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    /* 自身大小 */
+    min-block-size: 3rem;
+    margin-block-end: 1rem;
+}
+
+/* #sidenav-button */
+.hamburger {
+    --size: 4rem;
+    block-size: var(--size);
+    inline-size: var(--size);
+    
+    /* 令svg元素居中对齐 */
+    display: grid;
+    place-content: center;
+
+    color: black;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    outline: none;
+    
+    transition: border-color .25s ease, background-color .25s ease;
+}
+
+.hamburger:hover{
+    border-color: hsl(var(--brandHSL)/50%)
+}
+.hamburger:focus {
+
+    border-color: hsl(var(--brandHSL)/12%);
+    background-color: hsl(var(--brandHSL)/10%);
+}
+
+
+main>article {
+    /* 
+        对子元素的布局
+        
+        自身的宽度取决于子元素的最大宽度
+        我们再p上设置了max-inline-size: 50ch;  
+    */
+    display: inline-grid;
+    grid-gap:2ch;
+
+    /* 
+        自身的样式
+    */
+    padding: 2ch;
+    border-radius: 1ch;
+    
+    background-color: var(--surface2);
+    box-shadow: 0 2px 5px rgba(0,0,0,.2);
+}
