@@ -1,0 +1,300 @@
+/* 一些初始设置
+    html body 大小
+    h1, h2, p 字体大小 行高 字体颜色 margin 最大长度 
+    body 对子元素的布局 居中
+*/
+html {
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+body {
+  min-block-size: 100%;
+  min-inline-size: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  display: grid;
+  place-content: center;
+  font-family: system-ui, sans-serif;
+}
+
+p {
+  max-inline-size: 35ch;
+  margin-block: .5ch;
+}
+
+h2 {
+  font-size: 2.5rem;
+  margin-block-end: .5rem;
+  line-height: 1;
+}
+
+article {
+  box-sizing: border-box;
+  font-family: "Blokk";
+  font-size: 1.25rem;
+  line-height: 1;
+  color: hsl(0 0% 20%);
+}
+
+
+/* 
+    对div.device的css设置 
+*/
+
+.device {
+    /* 
+        大小设置
+    */
+    inline-size: 300px;
+    block-size: 500px;
+
+    /* 外观样式设置 */
+    border-radius: 1ch;
+    border: 2px solid #f2f2f2;
+    box-shadow: 
+        0 2.9px 1.4px rgba(0,0,0,.018), 
+        0 6.8px 3.3px rgba(0,0,0,.026), 
+        0 12.3px 5.9px rgba(51,0,27,.032), 
+        0 20.4px 9.8px rgba(51,0,27,.038), 
+        0 33.6px 16.1px rgba(51,0,27,.044), 
+        0 58.7px 28.2px rgba(0,0,0,.052), 
+        0 127px 61px rgba(0,0,0,.07);
+    
+    overflow: hidden;
+    /* 
+      但我们改变尺寸的时候，滚动条是否会固定？
+    */
+    resize: both;
+
+    /* 
+        对子元素的布局
+        主轴方向上子元素的大小，取决于自身的大小
+        副轴方向上的大小，如果设置为auto的话，会被拉伸到和父元素在该方向上的大小，而
+        不考虑自身内容的大小。
+        
+        .device的两个子元素header和snap-tabs正属于上述情况。
+        
+        snap-tabs可能会溢出，设置它overflow: hidden就好了，就可以尽可能的缩小
+    */
+    display: flex;
+    flex-direction: column;
+    /*  */
+}
+
+.device > nav {
+    padding: 1.5rem 1.5rem 1rem;
+}
+
+snap-tabs {
+    /* 
+     变量
+    */
+    --hue: 328deg;
+    /* 强调 */
+    --accent: var(--hue) 100% 54%;
+    --indicator-size: 2px;
+    --space-1: .5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+
+    
+    /* 
+      防溢出
+      snap-tabs也是flex子元素，形成一个scroll container，可以让它尽可能收缩
+    */
+    overflow: hidden;
+
+    /* 
+      求offsetLet时会需要它
+    */
+    position: relative;
+
+
+    /* 对子元素布局 */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 
+  snap-tabs各个后代元素的outline样式 
+  outline样式在focus时才显示出来
+*/
+snap-tabs header,
+snap-tabs nav,
+snap-tabs a, 
+snap-tabs section,
+snap-tabs article {
+  outline-color: hsl(var(--accent));
+  outline-offset: -5px;
+} 
+
+/* 
+  添加到snap-tabs>header,section
+  水平滚动容器
+*/
+.scroll-snap-x {
+  overflow-x: auto;
+  /* 
+    这会让flex子元素无限收缩，我们可能需要阻止它。
+  */
+  overflow-y: hidden;
+
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+}
+/* 
+  没有关闭动画
+*/
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-snap-x {
+    scroll-behavior: smooth;
+  }  
+}
+/* 
+  无法悬停的设备上，如手机，滚动轴宽度为0
+*/
+@media (hover: none) {
+  .scroll-snap-x::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+/* 
+  header
+*/
+snap-tabs header {
+  /* 
+    变量
+  */
+  --text-color: hsl(var(--hue) 5% 40%);
+  /* 
+    active tab的字体颜色 饱和度变大  亮度变小(显黑)
+  */
+  --text-active-color: hsl(var(--hue) 20% 10%);
+  /* 
+    阻止被压缩
+  */
+  flex-shrink: 0;
+  
+  /* 
+  对子元素的布局 nav, span.indicator
+  */
+  display: flex;
+  flex-direction: column;
+}
+
+
+snap-tabs header nav {
+  /* 
+    对子元素布局
+    a内联元素，设置成了flex子元素之后，就一行显示了，不换行了，此时会溢出，header
+    就成了滚动容器了
+    min-content
+    注意a里卖弄的text也可能会换行
+  */
+  display: flex;
+  align-items: center;
+}
+
+snap-tabs header nav a {
+  
+  /* 
+    大小
+  */
+  padding: var(--space-2) var(--space-3); 
+  
+  
+  /* 字体相关 */
+  font-weight: 700;
+  /* 
+    tab => active tab
+    --text-color => --text-active-color
+  */
+  color: var(--text-color);
+  text-decoration: none;
+
+  /* 阻止换行 */
+  white-space: nowrap;
+
+  /* 
+    对子元素的布局 text
+    其实，不太懂这个的作用
+  */
+  display: inline-flex;
+  align-items: center;
+
+  /* 
+    滚动对齐
+  */
+  
+  scroll-snap-align: start;
+}
+snap-tabs header nav a:hover {
+  background: hsl(var(--accent)/5%);
+}
+
+/* 
+  关闭显示动画时，在tab下加border并改变颜色来指明选中的tab
+  开始显示动画时，使用更先进的、效果更好的js scrollTimeLine解决方案
+*/
+
+@media (prefers-reduced-motion: reduced) {
+  snap-tabs header nav a {
+    border-block-end: var(--indicator-size) solid hsl(var(--accent)/0%);
+    transition: color .7s ease, border-color .5s ease;
+  }
+  snap-tabs header nav a[active] {
+    color: var(--text-active-color);
+    border-block-end-color: hsl(var(--accent));
+  }
+}
+
+
+snap-tabs header .indicator {
+  inline-size: 0;
+  block-size: var(--indicator-size);
+  border-radius: var(--indicator-size);
+  background: hsl(var(--accent));
+}
+@media (prefers-reduced-motion: reduce) {
+  snap-tabs header .indicator {
+    visibility: hidden;
+  }
+}
+/*
+  section
+ */
+
+section {
+
+  /* 
+    对子元素布局
+    article
+    水平滚动容器
+  */
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+}
+
+section article {
+  /*  
+    设置水平滚动的捕获点
+  */
+  scroll-snap-align: start;
+  
+  
+  /* 
+    垂直滚动容器
+  */
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+
+  /* 
+    大小
+  */
+  padding: var(--space-2) var(--space-3);
+
+}
