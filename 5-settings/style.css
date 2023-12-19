@@ -1,0 +1,438 @@
+/* 
+    设置一些全局变量
+*/
+
+:root {
+    --surface1: lch(10 0 0);
+    --surface2: lch(15 0 0);
+    --surface3: lch(20 0 0);
+    --surface4: lch(25 0 0);
+
+    --text1: lch(95 0 0);
+    --text2: lch(75 0 0);
+
+    --brand: lch(64 20 237);
+    --brand-bg1: lch(70 64 349);
+    --brand-bg2: lch(60 84 300);
+
+    --brand-bg-gradient: linear-gradient(to bottom, var(--brand-bg1), var(--brand-bg2));
+
+    /* 滑块高亮 */
+    --thumb-highlight-color: lch(100% 0 0 /20%);
+
+    /* 间距 */
+    --space-xxs: 0.25rem;
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+    --space-xxl: 6rem;
+
+    /* 从右往左 还是 从左往右 */
+    --isLTR: 1;
+    --isRTL: -1;
+}
+
+:root:dir(rtl) {
+    --isLTR: -1;
+    --isRTL: 1;
+}
+
+/* 
+    亮色调
+*/
+@media (prefers-color-scheme: light) {
+    :root {
+        --surface1: lch(90 0 0);
+        --surface2: lch(100 0 0);
+        --surface3: lch(98 0 0);
+        --surface4: lch(85 0 0);
+
+        --text1: lch(20 0 0);
+        --text2: lch(40 0 0);
+
+        --brand: lch(64 40 237);
+        --brand-bg1: lch(50 64 349);
+        --brand-bg2: lch(40 84 300);
+
+
+        /* 滑块高亮 */
+        --thumb-highlight-color: lch(0 0 0 /20%);
+    }
+}
+
+/* 一些重置样式 */
+h1, h2, h3 {
+    margin: 0;
+    font-weight: 500;
+}
+
+small {
+    color: var(--text2);
+    line-height: 1.5;
+}
+
+body {
+    /* 大小 */
+    min-block-size: 100vh;
+    margin: 0;
+    padding-block: var(--space-xs);
+    box-sizing: border-box;
+
+    /* 颜色 */
+    color: var(--text1);
+    background-color: var(--surface1);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+main {
+    /* 
+        对子元素的布局 h1 form
+        二行二列
+        
+        列宽取决于该列中元素的最大宽度
+
+        内容居中
+    */
+
+    display: grid;
+    place-content: center;
+    /* 
+        h1 和 form之间的间距
+    */
+    gap: var(--space-xl); 
+
+    /* 
+        在较小的屏幕上，内容不会离的边缘很近
+    */
+    padding: var(--space-sm);
+}
+@media (min-width: 540px) {
+    main {
+        padding: var(--space-lg);
+    }
+}
+@media (min-width: 800px) {
+    main {
+        padding: var(--space-xl);
+    }
+}
+
+
+form {
+    /* 对子元素布局 */
+    display: grid;
+    --repeat: auto-fit;
+    /* 
+        其实只会生成一列，
+        如果父元素的content width < 35ch，就选择content width为列宽(contentwidth >= 10ch)，
+        如果父元素的content width > 35ch，就选择35ch为列宽
+
+
+        当在大屏幕上时，更改auto-fit为2生成两列
+    */
+    grid-template-columns: repeat(var(--repeat), minmax(min(10ch, 100%), 35ch));
+
+
+    /* 
+        在--repeat: 2有用
+    */
+    align-items: start;    
+
+    /* 
+        分别用在一列两行 row space, auto-fit
+        和两列一行  column space,  2
+    */
+    gap: var(--space-xl) var(--space-xxl);
+}
+/* 大屏幕变换成两列 */
+@media (orientation: landscape) and (min-width: 640px) {
+    form {
+        --repeat: 2;
+    }
+}
+
+/* 
+    其他使用grid的地方都是为了设置相邻兄弟节点之间的间距
+    
+*/
+
+
+section {
+    /*  子元素header和filedset直接的间距 */
+    display: grid;    
+    gap: var(--space-md);
+}
+
+section header {
+    display: grid;
+    gap: var(--space-xxs)
+}
+
+section fieldset {
+
+    /* 利用间隙来代替border*/
+    display: grid;
+    gap: 1px;
+    /* 
+        这就是border的颜色
+        再盖上一层filedset-item的背景色，就只剩下间隙的颜色了
+
+        这里padding为0，如果padding不为0的话，该方法就不行了
+
+        padding可以添加到.fieldset-item上
+        */
+    background: var(--surface4);
+    border: 1px solid var(--surface4);
+
+    border-radius: var(--space-sm);
+
+    /* 重置默认样式 */
+    padding: 0;
+    margin: 0;
+
+    overflow: hidden;
+
+    /* 过渡效果  当focus-within时出现  */
+    transition: box-shadow .3s ease;
+}
+.fieldset-item {
+    background-color: var(--surface3);
+}
+/* 
+    当前元素被选中或其子元素被选中
+*/
+section fieldset:focus-within {
+    box-shadow: 0 5px 20px -10px hsla(0, 0%, 0%, .5);
+}
+
+.fieldset-item {
+    /* 
+        对子元素布局
+        gap
+        在一行上显式
+        picture/checkbox的大小
+    */
+    display: grid;
+    grid-template-columns: var(--space-lg) 1fr;
+    gap: var(--space-md);
+    
+    padding-block: var(--space-sm);
+    padding-inline: var(--space-md);
+}
+
+.fieldset-item > :is(picture, input[type=checkbox]) {
+    place-self: center;
+}
+
+
+.fieldset-item picture{
+    /* 
+        大小
+    */
+    width: var(--space-xl);
+    height: var(--space-xl);
+
+
+    /* 
+        对子元素布局 svg
+        居中
+    */
+    display: grid;
+    place-content: center;
+}
+
+.fieldset-item input[type=checkbox] {
+    /* 大小 */
+    width: var(--space-sm);
+    height: var(--space-sm);
+
+    /* 重置默认样式*/
+    margin: 0;
+
+    /* focus时呈现的样式 */
+    outline-offset: 5px;
+    accent-color: var(--brand);
+
+     /*  伪元素布局 */
+
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+/* 
+    不支持hover的设备上，手机....
+    令大小变大
+*/
+.fieldset-item input[type=checkbox] {
+    width: var(--space-sm);
+    height: var(--space-sm);
+    /* 
+        伪元素定位
+    */
+    position:relative;
+}
+
+
+.fieldset-item:focus-within picture {
+    clip-path: circle(50%);
+    background: var(--brand-bg-gradient);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .fieldset-item picture {
+        transition: clip-path .3s ease;
+    }
+}
+
+.fieldset-item input[type=checkbox]::before {
+    content: "";
+    display: block;
+
+    /* 
+        刚开始缩放的很小，几乎看不到
+        当hover时会放大，有一个过渡效果
+    */
+    --thumb-scale: .01;
+    --thumb-highlight-size: var(--space-xl);
+
+    /* 大小 */
+    width: var(--thumb-highlight-size);
+    height: var(--thumb-highlight-size);
+
+
+    /* 居中 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%) scale(var(--thumb-scale));
+
+    /* 颜色 */
+    background: var(--thumb-highlight-color);
+
+    clip-path: circle(50%);
+}
+.fieldset-item input[type=checkbox]:hover::before{
+    --thumb-scale: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+    .fieldset-item input[type=checkbox]::before {
+        transition: transform .3s ease;
+    }
+}
+
+.fieldset-item .input-stack {
+    display: grid;
+    gap: var(--space-xs);
+}
+
+.fieldset-item .input-stack > label {
+    display: contents;
+}
+
+
+/* 
+
+    input-stack input[type=range]
+*/
+
+input[type=range] {
+    --track-height: .5ex;
+    --track-fill: 0%;
+    --thumb-size: 3ex;
+    --thumb-offset: -1.25ex;
+    --thumb-highlight-size: 0px;
+    display: block;
+    width: 100%;
+    margin: 1ex 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: 0 0;
+    outline-offset: 5px
+}
+
+@media (hover: none) {
+    input[type=range] {
+        --thumb-size:30px;
+        --thumb-offset: -14px
+    }
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    appearance: none;
+    height: var(--track-height);
+    border-radius: 5ex;
+    background: linear-gradient(to right,transparent var(--track-fill),var(--surface1) 0),var(--brand-bg-gradient) fixed
+}
+
+input[type=range]::-moz-range-track {
+    -moz-appearance: none;
+    appearance: none;
+    height: var(--track-height);
+    border-radius: 5ex;
+    background: linear-gradient(to right,transparent var(--track-fill),var(--surface1) 0),var(--brand-bg-gradient) fixed
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: ew-resize;
+    border: 3px solid var(--surface3);
+    height: var(--thumb-size);
+    width: var(--thumb-size);
+    margin-top: var(--thumb-offset);
+    border-radius: 50%;
+    background: var(--brand-bg-gradient) fixed;
+    box-shadow: 0 0 0 var(--thumb-highlight-size) var(--thumb-highlight-color)
+}
+
+@media (prefers-reduced-motion:no-preference) {
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-transition: box-shadow .1s ease;
+        transition: box-shadow .1s ease
+    }
+}
+
+.fieldset-item[focus-within] input[type=range]::-webkit-slider-thumb {
+    border-color: var(--surface2)
+}
+
+.fieldset-item:focus-within input[type=range]::-webkit-slider-thumb {
+    border-color: var(--surface2)
+}
+
+input[type=range]::-moz-range-thumb {
+    -moz-appearance: none;
+    appearance: none;
+    cursor: ew-resize;
+    border: 3px solid var(--surface3);
+    height: var(--thumb-size);
+    width: var(--thumb-size);
+    margin-top: var(--thumb-offset);
+    border-radius: 50%;
+    background: var(--brand-bg-gradient) fixed;
+    box-shadow: 0 0 0 var(--thumb-highlight-size) var(--thumb-highlight-color)
+}
+
+@media (prefers-reduced-motion:no-preference) {
+    input[type=range]::-moz-range-thumb {
+        -moz-transition: box-shadow .1s ease;
+        transition: box-shadow .1s ease
+    }
+}
+
+.fieldset-item[focus-within] input[type=range]::-moz-range-thumb {
+    border-color: var(--surface2)
+}
+
+.fieldset-item:focus-within input[type=range]::-moz-range-thumb {
+    border-color: var(--surface2)
+}
+
+input[type=range]:is(:hover,:active) {
+    --thumb-highlight-size: 10px
+}
+

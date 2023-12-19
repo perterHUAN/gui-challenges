@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>settings</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Settings</h1>
+
+      <form action="">
+        <section>
+          <header>
+            <h1>Sound & vibration</h1>
+            <small>Adjust system volume channels</small>
+          </header>
+          <fieldset>
+            <div class="fieldset-item">
+              <picture aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-music"
+                >
+                  <path d="M9 18V5l12-2v13" />
+                  <circle cx="6" cy="18" r="3" />
+                  <circle cx="18" cy="16" r="3" />
+                </svg>
+              </picture>
+              <div class="input-stack">
+                <label for="media-volume" id="media-volume" aria-hidden="true"
+                  >Media volume</label
+                >
+                <input
+                  type="range"
+                  name="media-volume"
+                  aria-labelledby="media-volume"
+                  value="3"
+                  max="10"
+                />
+              </div>
+            </div>
+
+            <div class="fieldset-item">
+              <picture aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-phone"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                  />
+                </svg>
+              </picture>
+              <div class="input-stack">
+                <label for="call-volume" id="call-volume" aria-hidden="true"
+                  >Call volume</label
+                >
+                <input
+                  type="range"
+                  name="call-volume"
+                  aria-labelledby="call-volume"
+                  value="7"
+                  max="10"
+                />
+              </div>
+            </div>
+
+            <div class="fieldset-item">
+              <picture aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-bell"
+                >
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+              </picture>
+              <div class="input-stack">
+                <label for="ring-volume" id="ring-volume" aria-hidden="true"
+                  >Ring volume</label
+                >
+                <input
+                  type="range"
+                  name="ring-volume"
+                  aria-labelledby="ring-volume"
+                  value="5"
+                  max="10"
+                />
+              </div>
+            </div>
+            <div class="fieldset-item">
+              <picture aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-clock"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </picture>
+              <div class="input-stack">
+                <label for="alarm-volume" id="alarm-volume" aria-hidden="true"
+                  >Alarm volume</label
+                >
+                <input
+                  type="range"
+                  name="alarm-volume"
+                  aria-labelledby="alarm-volume"
+                  value="8"
+                  max="10"
+                />
+              </div>
+            </div>
+          </fieldset>
+        </section>
+
+        <section>
+          <header>
+            <h2>Notifications</h2>
+            <small>Turn specific channels on/off</small>
+          </header>
+          <fieldset>
+            <div class="fieldset-item">
+              <input
+                type="checkbox"
+                name="text-notifications"
+                id="text-notifications"
+              />
+              <div class="input-stack">
+                <label for="text-notifications">
+                  <h3>Text Messages</h3>
+                  <small
+                    >Get notified about all text messages sent to your
+                    device</small
+                  >
+                </label>
+              </div>
+            </div>
+            <div class="fieldset-item">
+              <input
+                type="checkbox"
+                name="voice-notifications"
+                id="voice-notifications"
+              />
+              <div class="input-stack">
+                <label for="voice-notifications">
+                  <h3>Voice Messages</h3>
+                  <small
+                    >Get notified about all voice messages sent to your
+                    device</small
+                  >
+                </label>
+              </div>
+            </div>
+            <div class="fieldset-item">
+              <input
+                type="checkbox"
+                name="email-nofications"
+                id="email-nofications"
+              />
+              <div class="input-stack">
+                <label for="email-nofications">
+                  <h3>Eamils</h3>
+                  <small
+                    >Get notified about all text messages to your device</small
+                  >
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </section>
+      </form>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
