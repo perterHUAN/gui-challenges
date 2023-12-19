@@ -1,0 +1,249 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+html {
+    width: 100%;
+    /* 
+        高度为视口的高度
+        不设置这一行，就为内容高度
+    */
+    height: 100%;
+    
+    overflow: hidden auto;
+
+    scroll-snap-type: y mandatory;
+}
+
+
+
+
+body {
+    min-block-size: 100vh;
+
+    /* 
+        对子元素的布局
+        方向 列
+        居中
+        副轴方向上不拉伸
+        主轴方向上设置justify-content: center没有用，高度就是内容高度，没有
+        剩余空间
+     */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 
+        
+    */
+    padding: 15vh 2vh;
+}
+
+section {
+    /* 
+        大小
+        宽度就是内容大大小，
+        子元素可以换行的，
+        不会大于body的content width 除非有有一个很长的单词不会换行就溢出了
+    */
+    height: 70vh;
+
+    /* 
+        对于子元素的布局  h1
+        居中的
+        
+        justify-content: center在这里也没有用
+    */
+    display: flex;
+    align-items: center;
+
+    /* 滚动对其 */
+    scroll-snap-align: center;
+}
+
+
+h1 {
+    font-weight: 100;
+    letter-spacing: .2em;
+
+    text-transform: uppercase;
+
+    /* 字体大小
+        视口
+        根元素的大小
+        clamp(min, exp, max)
+        如果exp的值在min和max之间 那么结果就为exp的值；
+        如果不在，就选定min(exp<min)或max(exp>max)
+    */
+    --scalar: 2vw;
+    font-size: clamp(1.5rem, calc(1rem + var(--scalar)),8rem);
+}
+
+@media (min-width: 480px) {
+    h1{
+        --scalar: 4vw;
+    }
+}
+
+/* 
+    针对letter-animation="breath"
+    发光的颜色
+
+    显式动画
+        light scheme
+        dark scheme
+
+*/
+@media (prefers-reduced-motion: no-preference) {
+    [letter-animation="breath"] {
+        --glow-color: black;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) and (perfers-color-scheme: dark) {
+    [letter-animation="breath"] {
+        --glow-color: white;
+    }
+}
+
+/* 
+    对于[letter-animation] >span的统一设置
+    
+    display: inline-block，原本的inline上，transform是没有效果的
+    
+    white-space: break-spaces; 保留空格
+
+    在不显示动画的情况下，不需要考虑这些，因为没有被split，也不需要transform    
+    */
+@media (prefers-reduced-motion: no-preference) {
+    [letter-animation] > span {
+        display: inline-block;
+        white-space: break-spaces;
+    }
+}
+
+
+/* 
+    设置letter-animation="breath"的动画
+
+*/
+
+@media (prefers-reduced-motion: no-preference) {
+    [letter-animation="breath"] > span {
+        /* 
+            动画名称 breath
+            持续时间 1.2s
+            函数 ease
+            延迟时间
+            次数
+            交替进行
+        */
+        animation: breath 1.2s ease calc(var(--index) * 100 * 1ms) infinite alternate;
+    }
+}
+
+
+@keyframes breath {
+    from {
+        animation-timing-function: ease-out;
+    }
+    to {
+        transform: scale(1.5) translateY(-5px) perspective(1px);
+        text-shadow: 0 0 40px var(--glow-color);
+        animation-timing-function: ease-in-out;
+    }
+}
+
+/* 
+    letter-animation="hover"
+*/
+
+@media (prefers-reduced-motion: no-preference) {
+    [letter-animation="hover"]:hover > span{
+        transform: scale(0.75);
+    }
+    [letter-animation="hover"] > span {
+        transition:transform .3s ease;
+        cursor: pointer;
+        will-change: transform;
+    }
+    [letter-animation="hover"] span:hover {
+        transform: scale(1.25);
+    }
+}
+
+/* 
+    word animation
+    一个一个单词挨着，没有空格没法换行，借助display: flex, flex-wrap: wrap;
+*/
+@media (prefers-reduced-motion: no-preference) {
+    [word-animation] {
+        display: flex;
+        gap: 1ch;
+        flex-wrap: wrap;
+    }
+}
+
+/* 
+    word-animation="trampoline"
+*/
+p {
+    font-weight: lighter;
+    line-height: 1.25;
+    max-width: 20ch;
+    font-size: clamp(1.25rem,calc(1rem + 3vw),3rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    [word-animation="trampoline"] > span {
+        /* 
+            动画设置
+            名字
+            持续时间
+            时间函数
+            延迟时间
+            重复次数
+            交替进行
+            */
+        transform: translateY(100%);
+        animation: trampoline 3s ease calc(var(--index) * 100 * 1ms) infinite alternate;
+    }
+}
+
+@keyframes trampoline {
+    0% {
+        transform: translateY(100%);
+        animation-timing-function:ease-out;
+    }
+    50% {
+        transform: translateY(0%);
+        animation-timing-function: ease-in;
+    }
+}
+
+
+
+/* 
+    word-animation: hover
+*/
+@media (prefers-reduced-motion: no-preference) {
+    [word-animation="hover"] > span {
+        transition: transform .3s ease;
+        will-change: transform;
+        cursor: pointer;
+    }
+    /* 
+        这里使用not更便捷，减少了代码量
+    */
+    [word-animation="hover"] > span:not(:hover){
+        transform: translateY(50%);
+    }
+    
+    [word-animation="hover"] {
+        overflow: clip;
+    }
+    
+}
