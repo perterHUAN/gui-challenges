@@ -1,0 +1,196 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    /* 
+        用于设置相邻兄弟节点之间的间距
+        宏布局时一般使用--md-space作为gap的值，
+        微布局时一般使用--sm-space作为gap的值
+
+        用于设置padding
+
+        可以借助calc对这些值进行变换
+    */
+    --sm-space: 1rem;
+    --md-space: 2rem;
+}
+html {
+    block-size: 100%;
+}
+
+body {
+    min-block-size: 100%;
+
+    /* 
+        对子元素布局 section section
+        方向向下
+        副轴方向上 不拉伸 保持自身大小 start对齐
+        主轴方向上设置justify-content没用  主轴方向上的大小由内容决定 父元素没有显式大小
+        */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: var(--md-space);
+
+    padding-block-start: calc(var(--md-space) * 2);
+    padding-block-end: var(--sm-space);   
+}
+
+
+section {
+    /* 
+        对子元素的布局 header ul
+        
+        主要为了设置gap
+    */
+    display: grid;
+    gap: var(--md-space);
+}
+
+header {
+    /* 
+        对子元素布局 h2 h3
+
+        主要为了设置gap
+    */
+    display: grid;
+    gap: calc(var(--sm-space) / 2);
+
+    /* 
+     */
+    padding-inline: var(--md-space);
+}
+
+.horizontal-media-scroller {
+    /* 
+        变量 用于设置图片的大小
+    */
+    --size: 150px;
+    /* 
+    
+        对子元素布局 
+        grid-auto-flow: column; 水平增长
+        行高 该行最高  
+        gap
+    */
+    display: grid;
+    grid-auto-flow: column;
+    gap: var(--sm-space);
+    /* 
+        设置溢出  当元素内容很多时 水平方向上形成滚动容器
+    */
+    overflow: auto hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior: contain;
+
+    /* 
+    
+    */
+    padding-inline: var(--md-space);
+    padding-block: var(--sm-space);
+    scroll-padding-inline: var(--md-space);
+}
+@media (prefers-reduced-motion: no-preference) {
+    .horizontal-media-scroller {
+        scroll-behavior: smooth;
+    }
+}
+
+
+.horizontal-media-scroller  li {
+    /* 
+        取消list-item的默认样式
+    */
+    display: inline-block;
+}
+
+.horizontal-media-scroller a {
+    /* 
+        去除a的默认样式
+    */
+    text-decoration: none;
+    
+    
+    /* 
+        设置outline focus时会出现 使用tab 上下键导航
+    */
+    outline-offset: 12px;
+
+     
+}
+
+.horizontal-media-scroller a:focus {
+    /* 
+        focus时outline变化
+    */
+    outline-offset: 7px;
+}
+@media (prefers-reduced-motion: no-preference) {
+    .horizontal-media-scroller a {
+        transition: outline-offset .3s ease;
+    }
+}
+
+
+.horizontal-media-scroller figure {
+    /* 
+        对子元素布局
+        主要是gap
+    */
+
+    display: grid;
+    gap: var(--sm-space);
+    /* 
+        设置滚动对齐
+    */
+    scroll-snap-align: start;
+}
+.horizontal-media-scroller picture {
+    inline-size: var(--size);
+    block-size: var(--size);
+}
+
+@supports (aspect-ratio: 1) {
+    .horizontal-media-scroller picture {
+        /* 
+            block-size 大小不变
+            inline-size根据block-size和aspect-ratio来计算
+        */
+        inline-size: auto;
+        aspect-ratio: 1;
+    }
+
+    section:nth-child(2) .horizontal-media-scroller  picture {
+        aspect-ratio: 16/9;
+    }
+    section:nth-child(3) .horizontal-media-scroller picture {
+        block-size: calc(var(--size) * 2);
+        aspect-ratio: 4/3;
+    }
+}
+
+
+.horizontal-media-scroller picture img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 1ex;
+    
+    /* 
+        照片没显示出来时，显示一张背景图片
+    */
+    background-image: linear-gradient(to bottom, #666, #333);
+}
+
+.horizontal-media-scroller figure figcaption {
+    font-family: blokk;
+    font-size: 1.75rem;
+    font-weight: 300;
+    word-break: break-word;
+}
