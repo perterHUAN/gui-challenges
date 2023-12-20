@@ -1,0 +1,381 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+/* 
+    颜色变量
+
+*/
+* {
+  /* brand foundation */
+  --brand-hue: 200;
+  --brand-saturation: 100%;
+  --brand-lightness: 50%;
+
+  /* light */
+  --brand-light: hsl(var(--brand-hue) var(--brand-saturation) var(--brand-lightness));
+  --text1-light: hsl(var(--brand-hue) var(--brand-saturation) 10%);
+  --text2-light: hsl(var(--brand-hue) 30% 30%);
+  --surface1-light: hsl(var(--brand-hue) 25% 90%);
+  --surface2-light: hsl(var(--brand-hue) 20% 99%);
+  --surface3-light: hsl(var(--brand-hue) 20% 92%);
+  --surface4-light: hsl(var(--brand-hue) 20% 85%);
+  --surface-shadow-light: var(--brand-hue) 10% 20%;
+  --shadow-strength-light: .02;
+
+  /* dark */
+  --brand-dark: hsl(
+    var(--brand-hue) 
+    calc(var(--brand-saturation) / 2)
+    calc(var(--brand-lightness) / 1.5)
+  );
+  --text1-dark: hsl(var(--brand-hue) 15% 85%);
+  --text2-dark: hsl(var(--brand-hue) 5% 65%);
+  --surface1-dark: hsl(var(--brand-hue) 10% 10%);
+  --surface2-dark: hsl(var(--brand-hue) 10% 15%);
+  --surface3-dark: hsl(var(--brand-hue) 5%  20%);
+  --surface4-dark: hsl(var(--brand-hue) 5% 25%);
+  --surface-shadow-dark: var(--brand-hue) 50% 3%;
+  --shadow-strength-dark: .8;
+
+  /* dim */
+  --brand-dim: hsl(
+    var(--brand-hue) 
+    calc(var(--brand-saturation) / 1.25)
+    calc(var(--brand-lightness) / 1.25)
+  );
+  --text1-dim: hsl(var(--brand-hue) 15% 75%);
+  --text2-dim: hsl(var(--brand-hue) 10% 61%);
+  --surface1-dim: hsl(var(--brand-hue) 10% 20%);
+  --surface2-dim: hsl(var(--brand-hue) 10% 25%);
+  --surface3-dim: hsl(var(--brand-hue) 5%  30%);
+  --surface4-dim: hsl(var(--brand-hue) 5% 35%);
+  --surface-shadow-dim: var(--brand-hue) 30% 13%;
+  --shadow-strength-dim: .2;
+}
+
+
+
+
+
+:root {
+  color-scheme: light;
+
+  /* set defaults */
+  --brand: var(--brand-light);
+  --text1: var(--text1-light);
+  --text2: var(--text2-light);
+  --surface1: var(--surface1-light);
+  --surface2: var(--surface2-light);
+  --surface3: var(--surface3-light);
+  --surface4: var(--surface4-light);
+  --surface-shadow: var(--surface-shadow-light);
+  --shadow-strength: var(--shadow-strength-light);
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --brand: var(--brand-dark);
+    --text1: var(--text1-dark);
+    --text2: var(--text2-dark);
+    --surface1: var(--surface1-dark);
+    --surface2: var(--surface2-dark);
+    --surface3: var(--surface3-dark);
+    --surface4: var(--surface4-dark);
+    --surface-shadow: var(--surface-shadow-dark);
+    --shadow-strength: var(--shadow-strength-dark);
+  }
+}
+
+/* 
+    通过在html上添加color-scheme属性来改变颜色方案
+*/
+[color-scheme="light"] {
+  color-scheme: light;
+
+  --brand: var(--brand-light);
+  --text1: var(--text1-light);
+  --text2: var(--text2-light);
+  --surface1: var(--surface1-light);
+  --surface2: var(--surface2-light);
+  --surface3: var(--surface3-light);
+  --surface4: var(--surface4-light);
+  --surface-shadow: var(--surface-shadow-light);
+  --shadow-strength: var(--shadow-strength-light);
+}
+
+[color-scheme="dark"] {
+  color-scheme: dark;
+  
+  --brand: var(--brand-dark);
+  --text1: var(--text1-dark);
+  --text2: var(--text2-dark);
+  --surface1: var(--surface1-dark);
+  --surface2: var(--surface2-dark);
+  --surface3: var(--surface3-dark);
+  --surface4: var(--surface4-dark);
+  --surface-shadow: var(--surface-shadow-dark);
+  --shadow-strength: var(--shadow-strength-dark);
+}
+
+[color-scheme="dim"] {
+  color-scheme: dark;
+
+  --brand: var(--brand-dim);
+  --text1: var(--text1-dim);
+  --text2: var(--text2-dim);
+  --surface1: var(--surface1-dim);
+  --surface2: var(--surface2-dim);
+  --surface3: var(--surface3-dim);
+  --surface4: var(--surface4-dim);
+  --surface-shadow: var(--surface-shadow-dim);
+  --shadow-strength: var(--shadow-strength-dim);
+}
+
+
+
+
+
+html {
+    block-size: 100%;
+
+    background-color: var(--surface1);
+    color: var(--text1);
+}
+
+body {
+    min-block-size: 100%;
+
+
+    /* 
+        对子元素布局 header main
+        grid
+        居中 
+        place-content: center;
+
+        一列n行
+        列宽等于该列元素的最大宽度
+        align-content: center;
+        行高取决于该行元素的高度 当有剩余空间时，不会拉伸
+    */
+    display: grid;
+    place-content: center;
+    gap: 5vmax;
+
+
+    /* 
+     */
+
+    padding: 5vmax;
+}
+
+header {
+    /* 
+        对子元素布局
+        垂直
+        间距
+    */
+    display: grid;
+    gap: 1ch;  
+}
+
+#theme-switcher {
+    /* 
+        对子元素布局
+        水平
+        间距
+    */
+    display: flex;
+    gap: 2ch;
+}
+
+#theme-switcher > div {
+    /* 
+        对子元素布局
+        水平
+        间距
+        居中对齐
+    */
+    display: flex;
+    gap:0.75ch;
+    align-items: center;
+}
+
+main {
+    /* 
+        对子元素布局
+        flex
+        wrap
+
+        当屏幕大时一行显示，屏幕小时，多行显示
+        居中
+        */
+    display: flex;
+    flex-wrap: wrap;
+
+    align-items: center;
+    /* 
+        在这里 main所属列的宽度就是main的内容宽度，所以没有剩余空间，这里去掉justify-content
+        也不会有变化。
+
+        当时如果给main增加一个比较长的兄弟节点时就居中了。
+    */
+    justify-content: center;    
+
+    gap: 10vmax 10vmin;
+}
+
+section{
+    /* 这一里没有，因为section就只有一个元素 */
+    display: grid;
+    gap: 2.5vh;
+}
+
+.surface-samples {
+    /* 
+        对子元素布局
+        二行二列的四个正方形 大小为--szie x --size
+    */
+    --size: 20ch;
+    display: grid;
+    grid-template-columns: var(--size) var(--size);
+    grid-auto-rows: var(--size);
+
+    gap: 2ch;
+}
+
+.surface-samples > div {
+    /* 
+        居中对齐
+    */
+    display: grid;
+    place-content: center;
+
+    /* 
+        设置字体大小  更显著
+    */
+    font-size: 3rem;
+    font-weight: 200;
+
+    border-radius: 1rem;
+
+
+}
+/* 
+    .surface-samples
+        .surface-sample1
+        .surface-sample2
+        .surface-sample3
+        .surface-sample4
+    
+    颜色设置....
+
+
+*/
+
+.surface-sample1 {
+    color: var(--text1);
+    background-color: var(--surface1);
+}
+
+.surface-sample2 {
+    color: var(--text1);
+    background-color: var(--surface2);
+}
+
+.surface-sample3 {
+    color: var(--text2);
+    background-color: var(--surface3);
+}
+
+.surface-sample4 {
+    color: var(--text2);
+    background-color: var(--surface4);
+}
+
+p {
+    max-inline-size: 35ch;
+    font-size:1.25rem;
+
+}
+p.text1 {
+    font-weight: 200;
+}
+h1 {
+    font-weight: 100;
+}
+
+.text-samples {
+    /* 
+        对子元素布局
+
+        gap
+    */
+    display: grid;
+    gap: 1.5ch;
+}
+
+.text-samples>h1{
+    /* 
+        对子元素布局
+        gap
+        垂直居中对齐
+    */
+    display: flex;
+    gap: 1ch;
+    align-items: center;
+    
+    font-size: 2.5rem;
+}
+.swatch {
+    inline-size: 1.5ch;
+    block-size: 1.5ch;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* 
+    brand
+    text color 1
+    text color 2
+
+    p text1
+    p text2
+    颜色设置....
+
+*/
+
+.brand {
+    background-color: var(--brand);
+}
+
+.text1 {
+    color: var(--text1);
+}
+.text2 {
+    color: var(--text2);
+}
+.swatch.text1 {
+    background-color: var(--text1);
+}
+.swatch.text2 {
+    background-color: var(--text2);
+}
+
+
+.rad-shadow {
+  border: 1px solid hsl(var(--brand-hue) 10% 50% / 15%);
+  box-shadow: 0 1rem .5rem -.5rem;
+  box-shadow:
+    0 2.8px 2.2px hsl(var(--surface-shadow) / calc(var(--shadow-strength) + .03)),
+    0 6.7px 5.3px hsl(var(--surface-shadow) / calc(var(--shadow-strength) + .01)),
+    0 12.5px 10px hsl(var(--surface-shadow) / calc(var(--shadow-strength) + .02)),
+    0 22.3px 17.9px hsl(var(--surface-shadow) / calc(var(--shadow-strength) + .02)),
+    0 41.8px 33.4px hsl(var(--surface-shadow) / calc(var(--shadow-strength) + .03)),
+    0 100px 80px hsl(var(--surface-shadow) / var(--shadow-strength))
+  ;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>color schemes</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Scheme</h1>
+      <form action="" id="theme-switcher">
+        <div>
+          <input checked type="radio" name="theme" id="auto" value="auto" />
+          <label for="auto">Auto</label>
+        </div>
+        <div>
+          <input type="radio" name="theme" id="light" value="light" />
+          <label for="light">Light</label>
+        </div>
+        <div>
+          <input type="radio" name="theme" id="dark" value="dark" />
+          <label for="dark">Dark</label>
+        </div>
+        <div>
+          <input type="radio" name="theme" id="dim" value="dim" />
+          <label for="dim">Dim</label>
+        </div>
+      </form>
+    </header>
+    <main>
+      <section>
+        <div class="surface-samples">
+          <div class="surface-sample1 rad-shadow">1</div>
+          <div class="surface-sample2 rad-shadow">2</div>
+          <div class="surface-sample3 rad-shadow">3</div>
+          <div class="surface-sample4 rad-shadow">4</div>
+        </div>
+      </section>
+      <section>
+        <div class="text-samples">
+          <h1>
+            <span class="swatch brand rad-shadow"></span>
+            brand
+          </h1>
+          <h1>
+            <span class="swatch text1 rad-shadow"></span>
+            Text Color 1
+          </h1>
+          <h1>
+            <span class="swatch text2 rad-shadow"></span>
+            Text Color 2
+          </h1>
+          <br />
+          <p class="text1">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae
+            officiis minima eligendi optio voluptas laboriosam.
+          </p>
+          <p class="text2">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis,
+            numquam! Et facere beatae doloribus iste.
+          </p>
+        </div>
+      </section>
+    </main>
+    <script src="index.js"></script>
+  </body>
+</html>
