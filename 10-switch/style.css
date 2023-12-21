@@ -1,0 +1,260 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+html {
+    block-size: 100%;
+}
+
+body {
+    min-block-size: 100%;
+
+
+    /* 
+        对子元素的布局
+        grid
+        居中
+        n行一列
+        
+        列宽取决于该列元素的最大宽度 默认拉伸到一样大
+        行高取决于该行元素的最大高度 这里就每行就只有一个元素
+    */
+    display: grid;
+    place-content: center;
+
+    padding: 5ch;
+}
+
+
+main {
+    /* 
+        对子元素布局 section + section
+
+        小屏幕上一列n行
+        大屏幕上是一行二列
+    */
+
+    display: grid;
+    gap: 5ch 20ch;
+
+    /* 
+        一行二列的时候对齐
+    */
+    align-items: start;
+}
+@media (min-width: 720px) {
+    main {
+       grid-auto-flow: column;
+       grid-auto-columns: 30ch; 
+    }
+}
+
+section {
+    /* 
+        对子元素布局 
+        一列n行
+        
+    */
+    display: grid;
+    gap: 2ch;
+}
+
+.gui-switch {
+    --thumb-size: 2rem;
+
+
+    --thumb: hsl(0 0% 100%);
+    --thumb-highlight: hsl(0 0% 0% / 25%);
+    --track-inactive: hsl(80 0% 80%);
+    --track-active: hsl(80 60% 45%);
+    
+    --track-size: calc(var(--thumb-size) * 2);
+    --track-padding: 2px;
+    --track-color-inactive: var(--track-inactive);
+    --track-color-active: var(--track-active);
+
+    --thumb-color: var(--thumb);
+    --thumb-color-highlight: var(--thumb-highlight);
+
+    --isLTR: 1;
+
+
+    /* 
+        对子元素布局
+    */
+    display: flex;
+    gap: 2ch;
+    justify-content: space-between;
+    align-items: center;
+
+    cursor: pointer;
+    user-select: none;
+}
+@media (prefers-color-scheme: dark) { 
+    .guid-switch{
+        --thumb: hsl(0 0% 5%);
+        --thumb-highlight: hsl(0 0% 100% / 25%);
+        --track-inactive: hsl(80 0% 35%);
+        --track-active: hsl(80 60% 60%);
+  }
+}
+
+.gui-switch:dir(rtl) {
+    --isLTR: -1;
+}
+
+
+.gui-switch>input {
+    --thumb-position: 0%;
+    --thumb-transition-duration: .25s;
+
+    /* 
+        去掉默认样式
+    */
+    appearance: none;
+    border: none;
+    /* 
+        让thumb在padding内
+    */
+    box-sizing: content-box;
+
+    padding: var(--track-padding);
+    background-color: var(--track-inactive);
+    inline-size: var(--track-size);
+    block-size: var(--thumb-size);
+    /* 
+        其实是calc(var(--thumb-size) / 2)
+    */
+    border-radius: var(--thumb-size);
+
+
+    /* 
+        对子元素布局
+    */
+    /* display: grid; */
+    /* 
+        一个一行一列的网格
+    */
+    /* grid: [stack] 1fr / [stack] 1fr; */
+}
+.gui-switch > input:checked {
+    background-color: var(--track-color-active);
+    /* 
+        向右移动 track-length - thumb-size
+    */
+    --thumb-position: calc((var(--track-size)  - 100%) * var(--isLTR));
+}
+
+
+/* 
+
+    default
+*/
+.gui-switch > input:hover::before {
+    --highlight-size: .5rem;
+}
+.gui-switch > input::before {
+    display: block;
+    content:"";
+
+    inline-size: var(--thumb-size);
+    block-size: var(--thumb-size);
+    border-radius: 50%;
+    background-color: var(--thumb-color);
+    
+    /* grid-area: stack; */
+
+    /* 
+        位置变化
+    */
+    transform: translateX(var(--thumb-position));
+
+    /* 
+        hover
+    */
+    --higlight-size: 0px;
+    box-shadow: 0 0 0 var(--highlight-size) var(--thumb-color-highlight);
+
+
+    cursor: pointer;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+    .gui-switch > input::before {
+        transition: transform var(--thumb-transition-duration) ease;
+    }
+}
+
+/* 
+    indeterminate 
+
+*/
+
+.gui-switch >input:indeterminate {
+    --thumb-position: calc((var(--track-size) / 2 - var(--thumb-size) / 2 ) * var(--isLTR));
+}
+
+
+/* 
+    disabled
+*/
+.gui-switch >input:disabled {
+    cursor: not-allowed;
+    --thumb-color: transparent;
+}
+
+.gui-switch > input:disabled::before {
+    cursor: not-allowed;
+    box-shadow: inset 0 0 0 2px hsl(0deg 0% 100% / 0.5);
+}
+
+/* 
+    disabled checked
+
+    disabled + checked
+
+
+*/
+
+
+/* 
+    -vertical
+*/
+
+.gui-switch.-vertical {
+    /* 
+        
+        利用transform来旋转
+        但是block-size还是旋转前的（水平放置）旋转后可能和上下重叠
+        使用的box-sizing: content-size;
+        */
+    min-block-size: calc(var(--track-size) + 2 * var(--track-padding));
+}
+
+.gui-switch.-vertical > input {
+    
+    transform: rotate(calc(90deg * var(--isLTR) * -1));
+}
+
+
+.gui-switch.ios-light {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    --track-active: hsl(212deg 100% 50%);
+    --track-inactive: white;
+    --thumb-size: 1.5rem;
+    --thumb-color: white;
+    --thumb-highlight-color: hsl(212deg 100% 50% / 25%); 
+}
+.gui-switch.ios-light > input {
+    border: 1px solid hsl(0 0% 0% / 15%);
+}
+.gui-switch.ios-light > input::before {
+    box-shadow: 0 0 0 var(--highlight-size) var(--thumb-color-highlight), 0 0 0 1px hsl(0 0% 0% / 15%), 0px 3px 4px 1px hsl(0 0% 0% / 20%);
+}
