@@ -216,13 +216,12 @@ main {
         */
     display: flex;
     flex-wrap: wrap;
-
-    align-items: center;
     /* 
-        在这里 main所属列的宽度就是main的内容宽度，所以没有剩余空间，这里去掉justify-content
-        也不会有变化。
-
-        当时如果给main增加一个比较长的兄弟节点时就居中了。
+        在一行的时候 有用
+    */
+    align-items: center;
+    /*
+        在一列的是由有用 
     */
     justify-content: center;    
 
