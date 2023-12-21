@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>breadcrumbs</title>
+
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <!-- 
+
+        定义一次路径，所有该图标的实例都可以使用
+        避免了重复和不一致
+     -->
+    <svg style="display: none">
+      <symbol id="icon-home">
+        <title>A home icon</title>
+        <path
+          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+        ></path>
+      </symbol>
+      <symbol id="icon-dropdown-arrow">
+        <title>A dropdown arrow icon</title>
+        <path d="M19 9l-7 7-7-7"></path>
+      </symbol>
+    </svg>
+    <nav class="breadcrumbs">
+      <a href="#home">
+        <span class="crumbicon">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+            <use href="#icon-home"></use>
+          </svg>
+        </span>
+        <span class="homelabel">Home</span>
+      </a>
+      <span class="crumbseparator" aria-hidden="true">·</span>
+      <span class="crumb">
+        <a href="./home/blog">Blog</a>
+        <span class="crumbicon">
+          <svg viewbox="0 0 24 24" width="24" height="24">
+            <use href="#icon-dropdown-arrow"></use>
+          </svg>
+          <select class="disguisedselect" title="navigate to another site">
+            <option>About</option>
+            <option>RPG</option>
+            <option>Projects</option>
+            <option>Clients</option>
+            <option selected>Blog</option>
+          </select>
+        </span>
+      </span>
+      <span class="crumbseparator" aria-hidden="true">·</span>
+      <span class="crumb">
+        <a href="./home/blog/front-end">Front-end</a>
+        <span class="crumbicon">
+          <svg viewbox="0 0 24 24" width="24" height="24">
+            <use href="#icon-dropdown-arrow"></use>
+          </svg>
+          <select class="disguisedselect" title="navigate to another site">
+            <option>Back-end</option>
+            <option>Front-end</option>
+          </select>
+        </span>
+      </span>
+      <span class="crumbseparator" aria-hidden="true">·</span>
+      <span class="crumb">
+        <a href="./home/blog/front-end/accessibility">Accessibility</a>
+        <span class="crumbicon">
+          <svg viewbox="0 0 24 24" width="24" height="24">
+            <use href="#icon-dropdown-arrow"></use>
+          </svg>
+          <select class="disguisedselect" title="navigate to another site">
+            <option>Color</option>
+            <option>Markup</option>
+            <option selected>Accessibility</option>
+            <option>Javascript</option>
+          </select>
+        </span>
+      </span>
+      <span class="crumbseparator" aria-hidden="true">·</span>
+      <span class="crumb">
+        <a aria-current="page"
+          >Why you still need role="navagation" on a nav element?</a
+        >
+        <span class="crumbicon">
+          <svg viewbox="0 0 24 24" width="24" height="24">
+            <use href="#icon-dropdown-arrow"></use>
+          </svg>
+          <select class="disguisedselect" title="navigate to another article">
+            <option>How to set roving UX</option>
+            <option>The trick to good visibly hidden elements</option>
+            <option selected>
+              Why you still need role="navagation" on a nav element?
+            </option>
+          </select>
+        </span>
+      </span>
+    </nav>
+
+    <script src="index.js"></script>
+  </body>
+</html>
