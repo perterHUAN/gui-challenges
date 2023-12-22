@@ -1,0 +1,95 @@
+@import './split-button.css';
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+/* 
+    颜色主题
+*/
+
+html {
+  --brand-hue: 200;
+  --brand-saturation: 100%;
+  --brand-lightness: 50%;
+
+  --brand-light: hsl(var(--brand-hue) var(--brand-saturation) var(--brand-lightness));
+  --text1-light: hsl(var(--brand-hue) var(--brand-saturation) 10%);
+  --surface1-light: hsl(var(--brand-hue) 25% 97%);
+
+  --brand-dark: hsl( var(--brand-hue) calc(var(--brand-saturation) / 2) calc(var(--brand-lightness) / 1.5) );
+  --text1-dark: hsl(var(--brand-hue) 15% 85%);
+  --surface1-dark: hsl(var(--brand-hue) 10% 10%);
+}
+
+/* 
+    最终使用的变量
+    --brand
+    --text1
+    --surface1
+
+    对于使用者来说，其他变量我们是不使用的，或者说是看不到的。其他变量的存在就是
+    为了方便计算在不同主题下的--brand, --text1, --surface1。
+
+    没有入度的变量
+    --brand-hue
+    --brand-saturation
+    --brand-lightness
+*/
+
+:root {
+  --brand: var(--brand-light);
+  --text1: var(--text1-light);
+  --surface1: var(--surface1-light);
+}
+
+@media (prefers-color-scheme: reduce) {
+    :root {
+        --brand: var(--brand-dark);
+        --text1: var(--text1-dark);
+        --surface1: var(--surface1-dark);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+html {
+    block-size: 100%;
+}
+
+
+body {
+    min-block-size: 100%;
+
+    /* 
+    
+        对子元素布局
+        
+        flex
+        方向 竖直向下
+        
+        居中
+    */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5vmin;
+
+
+    /* 
+        颜色主题
+    */
+
+    color: var(--text1);
+    background-color: var(--surface1);
+}
+

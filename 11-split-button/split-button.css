@@ -1,0 +1,325 @@
+.gui-split-button {
+    /* 
+        变量
+    */
+
+    /* 
+        normal, hover, focus-visivle, focus-within, active button's background
+    */
+    --theme:        hsl(220 75% 50%);
+    --theme-hover:  hsl(220 75% 45%);
+    --theme-active: hsl(220 75% 40%);
+    
+    
+    --theme-text:   hsl(220 75% 25%);
+    --theme-border: hsl(220 50% 75%);
+
+    /* 
+        这个ontheme变量名起的不知所云
+    */
+    --ontheme:      hsl(220 90% 98%);
+    --popupbg:      hsl(220 0% 100%);
+
+    --border: 1px solid var(--theme-border);
+
+    --radius: 6px;
+
+    /* 
+        pop up 动画时间
+    */
+    --in-speed: 500ms;
+    --out-speed: 100ms;
+
+
+    /* 
+        对子元素的布局以及自己与其他兄弟节点的关系inline
+
+        inline-flex
+    */
+    display: inline-flex;
+    /* 
+        默认
+        align-items: stretch;
+
+        justify-content: start;
+    */
+
+    
+    background-color: var(--theme);
+    color: var(--ontheme);
+
+    /* 
+    
+        我们在这里设置了border-radius,在它的子元素上还需要设置border-radius
+        直接设置overflow: hidden不就行了吗?
+
+        overflow:hidden会让gui-popup消失
+    */
+    border-radius: var(--radius);
+    
+    /* 
+        svg填充
+     */
+    fill: var(--ontheme);
+
+
+    touch-action: manipulation;
+    user-select: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    .gui-split-button {
+        --theme:        hsl(220 50% 60%);
+        --theme-hover:  hsl(220 50% 65%);
+        --theme-active: hsl(220 75% 70%);
+        --theme-text:   hsl(220 10% 85%);
+        --theme-border: hsl(220 20% 70%);
+        --ontheme:      hsl(220 90% 5%);
+        --popupbg:      hsl(220 10% 30%);   
+    }
+}
+
+
+.gui-split-button button {
+    cursor: pointer;
+    /* 
+        去除它的默认样式
+        appearance好像去除不掉border
+    */
+    appearance: none;
+    border: none;
+    /* 
+        其中有两种button
+        primary button   <button>text</button>
+        secondary button <button>svg + text</button>
+    */
+    
+    /* 
+        对子元素的布局
+    */
+    display: inline-flex;
+    align-items: center;
+    /* 
+    
+        justify-content: start默认
+    */
+    gap: 1ch;
+    
+
+    white-space: nowrap;
+
+    /* 
+        这里不写，也会隐式继承，但是特殊度不同。
+        到底有没有写的必要呢？
+    */
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 500;
+
+
+    padding-block: 1.25ch;
+    padding-inline: 2.5ch;
+
+
+    /* 
+        背景颜色
+        设置了background-position: 0 0;
+        其他属性值设置成了initial(这是一种重置的好方法，仅需一行)
+
+        background-color的initial是transparent
+        
+        所以button的背景和它的父元素gui-split-button共享
+        
+        当normal -> hover, active...时才使用自己的背景色
+    */
+    background: 0 0;
+    color: var(--ontheme);
+    /* 
+        foucs时显示
+        
+        outline的颜色和字的颜色相同 和背景色不同
+    */
+    outline-color: var(--ontheme);
+    outline-offset: -5px;
+}
+/* 
+    button 状态改变时的样式变化
+*/
+
+/* 
+    这里有两种button需要不同的设置
+    .gui-split-button > button
+    .gui-split-button > gui-popup > button
+*/
+.gui-split-button > button {
+    border-radius: var(--radius) 0 0 var(--radius);
+}
+
+@supports (border-start-start-radius: 1px) {
+    /* 
+        使用逻辑变量 当书写方向发生变化时，仍然可以适用
+    */
+    .gui-popup-button > button {
+        border-start-start-radius: var(--radius);
+        border-end-start-radius: var(--radius);
+    }
+}
+/* 
+    .gui-split-button> button不同状态
+*/
+.gui-split-button>button:is(:hover,:focus-visible) {
+    background-color: var(--theme-hover);
+}
+.gui-split-button>button:active {
+    background-color: var(--theme-active);
+}
+
+
+
+
+
+.gui-popup-button {
+    /* 
+        对子元素布局 svg (+ ul)
+    */
+
+    inline-size: 4ch;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 
+        对子元素布局 ul
+    */
+    position: relative;
+
+    /* 
+        border-radius
+    
+    */
+
+    border-radius: 0 var(--radius) var(--radius) 0;
+    border-inline-start: var(--border);
+}
+@supports (border-start-end-radius: 1px) {
+    .gui-popup-button {
+        border-start-end-radius: var(--radius);
+        border-end-end-radius: var(--radius);
+    }
+}
+/* 
+    .gui-popup-button 不同状态
+*/
+.gui-popup-button:is(:hover,:focus-within) {
+    background-color: var(--theme-hover);
+}
+.gui-popup-button:active {
+    background-color: var(--theme-active);
+}
+
+
+
+
+
+/* 
+    设置 svg
+    
+    gui-popup-button>svg 特别设置 动画效果
+
+*/
+
+.gui-split-button svg {
+    inline-size: 2ch;
+    box-sizing: content-box;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2px;
+}
+
+.gui-popup-button:is(:focus-within, :hover, :active) > svg {
+    transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .gui-popup-button > svg {
+        transition: transform var(--out-speed) ease;
+    }
+    .gui-popup-button:focus-within > svg {
+        transition: transform var(--in-speed) ease;
+    }
+}
+
+
+
+/* 
+    .gui-popup
+
+*/
+
+.gui-popup {
+
+    /* 
+        对自己的定位
+    */
+    position: absolute;
+    inset-block-end: 80%;
+    inset-inline-start:-1.5ch;
+
+    /* 
+        去除默认样式 ul
+    */
+    list-style-type: none;
+
+
+    /* 
+        对子元素布局 li
+    */
+    display: flex;
+    flex-direction: column;
+
+    /* 
+
+    */
+    background-color: var(--popupbg);
+    color: var(--theme-text);
+
+
+    padding-inline: 0;
+    padding-block: 0.5ch;
+    border-radius: var(--radius);
+    
+    /* 
+        隐藏
+    */
+    opacity: 0;
+    cursor: none;
+    pointer-events: none;
+}
+
+.gui-popup button {
+    color: var(--theme-text);
+    width: 100%;
+}
+
+.gui-popup button:is(:focus-visible, :hover) {
+    background-color: var(--theme-hover);
+    color: var(--ontheme);
+}
+.gui-popup button:active {
+    background-color: var(--theme-active);
+}
+
+.gui-popup svg {
+    fill: var(--popupbg);
+    stroke: var(--theme);   
+}
+.gui-popup button:is(:focus-visible, :hover) > svg {
+    fill: none;
+    stroke: currentColor;
+}
+
+.gui-popup-button:is(:focus-within, :hover, :active) > .gui-popup {
+    opacity: 1;
+    cursor: pointer;
+    pointer-events: revert;
+}
