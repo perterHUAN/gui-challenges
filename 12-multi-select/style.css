@@ -1,0 +1,343 @@
+:root {
+  --border-color: hsl(221 30% 90%);
+  --surface-color-1: hsl(221 90% 98%);
+  --surface-color-2: hsl(221 40% 100%);
+  --text-color-1: hsl(221 50% 15%);
+  --text-color-2: hsl(221 20% 40%);
+  --shadow-highlight-color: hsl(219 62% 42% / 25%);
+
+  --isLTR: 1;
+  --isRTL: -1;
+ 
+}
+@media (prefers-reduced-motion: reduced) {
+    :root {
+        --border-color: hsl(221 10% 20%);
+        --surface-color-1: hsl(221 20% 5%);
+        --surface-color-2: hsl(221 5% 10%);
+        --text-color-1: hsl(221 90% 98%);
+        --text-color-2: hsl(221 20% 80%);
+        --shadow-highlight-color: hsl(219 50% 82% / 25%);
+    }
+    
+}
+:root:dir(rtl) {
+    --isLTR: -1;
+    --isRTL: 1;
+}
+
+
+
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+
+html {
+    block-size: 100%;
+}
+
+body {
+    min-block-size: 100%;
+    background-color: var(--surface-color-1);
+    color: var(--text-color-1);
+    font-family: Blook, system-ui, sans-serif;
+    font-size: 125%;
+    /* 
+        对子元素布局
+        垂直排列
+        
+        副轴方向会被拉伸成一样大（没有显示设置大小的话）
+    */
+    display: flex;
+    flex-direction: column;
+
+    padding: 10vmin;
+}
+
+
+main {
+    /* 
+        对子元素布局
+        --------header--------
+        aside      article
+
+        grid布局
+        二行二列
+
+
+        不拉伸子元素 article和aside同一行  同一行网格高度相同，拉伸的话aside会很大
+        也可能相反，article被拉伸的很大
+        
+        align-items: start;
+
+        
+
+    */
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: start;
+
+    gap: 5vmin;
+}
+/* 
+    orientation视口的方向
+    
+    width >= height landscape
+    width < height portrait
+
+*/
+@media (orientation: portrait) {
+    main{
+        grid-template-columns: 1fr;
+    }
+}
+ 
+main>header {
+    /* 
+        定位
+        占据第一行
+    */
+    grid-column: 1 / -1;
+
+    /* 
+        对子元素布局
+
+        主要是为了设置gap
+    */
+    display: grid;
+    gap: 1ch;
+}
+
+main>aside {
+    /* 
+        定位
+        顺排 第二行第一列
+    */
+
+
+    /* 
+        结合counter-increment和计算选中的范围的个数
+
+        我觉的放在form上更好
+    */
+    counter-reset: filter;
+}
+
+main>aside input:checked {
+    counter-increment: filter; 
+}
+#applied-filters {
+    inline-size: 0;
+    block-size: 0;
+    overflow: hidden;
+}
+
+#applied-filters::before {
+    content: counter(filter) " filters ";
+}
+.sr.only {
+    inline-size: 0;
+    block-size: 0;
+    overflow: hidden;
+}
+
+main>aside form {
+    /* 
+    最子元素布局 select div div
+    gap
+    */
+    display: grid;
+    gap: 2ch;
+
+
+    /* 
+        限制最大宽度
+    */
+    max-inline-size: 35ch;
+}
+
+
+main>aside form select {
+    /* 
+        只有在触摸屏上才显示
+
+        使用设备提供的样式
+        折叠起来 占面积小
+    */
+    
+    display: none;
+
+    padding-inline: 1ch;
+    padding-block: 0.6ch;
+
+}
+@media (pointer: coarse) {
+    
+    main>aside form select {
+        display: block;
+    }
+    main>aside form fieldset {
+        display: none;
+    }
+}
+fieldset {
+    padding: 2ch;
+    border-radius: 10px;
+    /* 
+        background-color
+        border
+    */
+    background-color: var(--surface-color-2);
+    border: 1px solid var(--border-color);
+}
+
+fieldset:focus-within {
+    border-color: var(--text-color2);
+}
+
+fieldset > legend {
+    font-size: .9em;
+    color:var(--text-color-1);
+}
+
+fieldset div + div {
+    margin-block-start: 2ch;
+}
+
+fieldset div {
+    /* 
+        对子元素布局 label checkbox
+        gap
+        label中文字换行时仍可以对齐
+        
+    */
+    display: flex;
+    gap: 2ch; 
+    align-items: baseline;
+
+    color: var(--text-color-1);
+}
+
+
+/* 
+    给checkbox增加一些用户体验
+    
+    focus
+        outline-offset
+        accent-color
+    cursor
+        pointer
+
+    hover
+        ::before transform scale
+*/
+
+input[type=checkbox] {
+    outline-offset: 5px;
+    accent-color: var(--text-color-2);
+    cursor: pointer;
+    
+    /* 
+        ::before absolute定位
+    */
+    position: relative;
+    
+}
+@media (hover: none) {
+    input[type=checkbox] {
+        inline-size: 1.5rem;
+        block-size: 1.5rem;
+    }
+}
+
+input[type=checkbox]::before {
+
+    /* 
+        变量
+        用于transform
+    */
+    --thumb-scale: .01;
+    --thumb-highlight-size: 3rem;
+
+
+
+    content: "";
+
+    /* 
+        inline-size: ;
+        block-size: ;
+    */
+    inline-size: var(--thumb-highlight-size);
+    block-size: var(--thumb-highlight-size);
+
+    /* 
+    
+    */
+    clip-path: circle(50%);
+
+    /* 
+        缩放到很小
+    */
+    /* transform: scale(0.01); */
+
+
+    /* 
+        定位    
+    */
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: 50%;
+
+    transform: 
+        translateX(calc(var(--isRTL) * 50%)) 
+        translateY(-50%) 
+        scale(var(--thumb-scale));
+    will-change: transform;
+
+
+    background-color: hsl(0deg 0% 50% / 20%);
+}
+
+input[type=checkbox]:hover::before {
+    --thumb-scale: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    input[type=checkbox]::before {
+        transition: transform .3s ease;
+    }
+}
+
+article {
+    --size: min(300px, calc(25% - 2ch));
+
+}
+article > span {
+    display: inline-block;
+    will-change: transform;
+
+    background: hsl(0 0% 50% / 25%);
+    border-radius: 10px;
+
+    inline-size: var(--size);
+    block-size: 15ch;
+
+    margin: 1ch;
+}
+
+
+@media (orientation: portrait) {
+    article > span{
+        --size: calc(50% - 2ch);
+    }
+}
+@supports (aspect-ratio: 1) {
+    article > span {
+      block-size: auto;
+      aspect-ratio: 1;
+    }
+}
