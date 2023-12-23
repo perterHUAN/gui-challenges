@@ -1,0 +1,157 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+
+html {
+    block-size: 100%;
+    /* 
+        使用系统提供的亮主题和暗主题
+    */
+    color-scheme: light dark;
+}
+
+body {
+    min-block-size: 100%;
+
+
+    /* 
+        对子元素布局
+        居中对齐
+        flex 
+        gap
+        */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 2ch;
+}
+
+
+button {
+    font-size: 1.5rem;
+    padding-inline: 1ch;
+    padding-block: .5ch;
+}
+
+
+
+.gui-toast-group {
+
+    /* 
+        定位
+        fix
+        底部
+    */
+
+    position: fixed;
+    /* 
+        左右到边界
+        下到下边界
+
+        其实确定了该元素的外部尺寸的宽度
+    */
+    inset-inline: 0;
+    inset-block-end: 0;
+    
+    /* 
+        防止被覆盖
+    */
+    z-index: 1;
+
+    padding-block-end: 2ch;
+
+
+    /* 
+        对子元素布局
+
+        网格水平居中
+        网格中的元素水平居中
+        一列n行 所有的元素的中心在一条竖直线上
+        */
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    gap: 1ch;
+}
+
+.gui-toast {
+    /* 
+        多少秒之后消失
+    */
+    --duration: 3s;
+    /* 
+        用于设置浅主题和暗主题
+        浅主题 背景色亮度大
+        暗主题 背景色亮度小
+    */
+    --bg-lightness: 90%;
+
+    /* 
+        用于slide in动画
+    */
+    --travel-distance: 0;
+    /* 
+        <outup>text<output> 
+    */
+    
+    /* 
+        限制一下它的长度，可以让文字换行，
+        在小屏幕上可能会在屏幕之外显示
+    */
+    max-inline-size: min(25ch, 90vw);
+    padding-block: .5ch;
+    padding-inline: 1ch;
+
+    
+    color:black;
+    background-color: hsl(0deg 0% var(--bg-lightness) / 90%);
+
+    font-size: 1rem;
+
+
+    /* 
+        设置动画效果
+        fade in 
+        slide in
+        fade out
+
+        添加该元素的时候就会启动这些动画
+    */
+
+    animation: fade-in .3s ease, side-in .3s ease, fade-out .3s ease var(--duration);
+}
+@media (prefers-color-scheme: dark) {
+    .gui-toast {
+        color: white;
+        --bg-lightness: 20%;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .gui-toast {
+        --travel-distance: 5vh;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+@keyframes fade-out {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes side-in {
+    from {
+        transform: translateY(var(--travel-distance, 10px));
+    }
+}
+
+
