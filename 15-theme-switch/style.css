@@ -1,0 +1,188 @@
+@import "https://unpkg.com/open-props/easings.min.css";
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    block-size: 100%;
+    /* 使用系统提供的颜色主题 */
+    color-scheme: light;
+}
+html[data-theme="dark"] {
+    color-scheme: dark;
+}
+
+
+
+
+body {
+    min-block-size: 100%;
+
+    /* 
+        对子元素布局
+        
+        居中
+    */
+    display: grid;
+    justify-content: center;
+    align-content: center;
+
+}
+
+.theme-toggle {
+    --size: 2rem;
+    --icon-fill: hsl(210 10% 30%);
+    --icon-fill-hover: hsl(210 10% 15%);
+
+
+    /* 
+    
+        去掉button的一些默认样式
+        background: none; 让背景色变透明了
+    */
+    background: none;
+    padding: 0;
+    border: 0;
+
+
+    /* 
+        大小
+    */
+
+    inline-size: var(--size);
+    block-size: var(--size);
+    aspect-ratio: 1;
+    border-radius: 50%;
+
+
+    cursor: pointer;
+    touch-action: manipulation;
+
+    /* 
+        focus时的样式
+    */
+    outline-offset: 5px;
+}
+[data-theme="dark"] .theme-toggle {
+    --icon-fill: hsl(210 10% 70%);
+    --icon-fill-hover: hsl(210 15% 90%);
+}
+@media (hover: none) {
+    /* 
+        在不能hover的设备上，一般不能与屏幕进行精确交互，放大这个尺寸
+    */
+    .theme-toggle {
+        --size: 48px;
+    }
+}
+
+
+.theme-toggle > svg {
+    /* 
+        大小
+    */
+    block-size: 100%;
+    inline-size: 100%;
+    
+    stroke-linecap: round;
+}
+
+/* 
+    设置svｇ的颜色
+    变换的orgin为中心
+
+    这一步很重要，要没有这一句，后面就的变换就没法正常进行了
+*/
+.sun-and-moon > :is(.moon, .sun, .sun-beams) {
+    transform-origin: center center;
+}
+
+/* 
+
+    当这些线构成一个封闭图形时，fill填充的是一个内部。
+    当仅仅是一些线的时候，应该使用stroke描边，来改变线的颜色
+    */
+.sun-and-moon > :is(.moon,.sun) {
+    fill: var(--icon-fill);
+}
+.theme-toggle:is(:hover,:focus-visible) > .sun-and-moon > :is(.moon, .sun){
+    fill: var(--icon-fill-hover);
+}
+.sun-and-moon > .sun-beams {
+    stroke: var(--icon-fill);
+    stroke-width: 2px;
+}
+
+.theme-toggle:is(:hover,:focus-visible) > .sun-and-moon > .sun-beams { 
+    stroke: var(--icon-fill-hover);
+}
+
+/* 
+    浅色主题向暗色主题变换
+
+    sun变大
+    mask > circle向左移动 盖住一部分sun
+    sun beams变透明
+
+
+    暗色主题向浅色主题变换
+
+    对应上面的每一步，但是过程是相反的
+*/
+[data-theme="dark"]  .sun-and-moon > .sun {
+      transform: scale(1.75);
+}
+[data-theme="dark"] .sun-and-moon > .sun-beams {
+      opacity: 0;
+}
+[data-theme="dark"] .sun-and-moon > .moon > circle {
+      transform: translateX(-7px);
+}
+
+/* 
+    支持动画
+*/
+
+@media (prefers-reduced-motion: no-preference) {
+    .sun-and-moon > .sun {
+        /*
+            scale 
+        */
+        transition: transform .5s var(--ease-elastic-3);
+    }
+    .sun-and-moon > .sun-beams {
+        transition: transform .5s var(--ease-elastic-4)
+        opacity .5s var(--ease-3);
+    }
+
+    .sun-and-moon > .moon > .circle {
+        transition: transform .25s var(--ease-elastic-5);
+    } 
+
+    /* 
+        浅色到暗色
+        加上一些延迟
+    */
+    [data-theme="dark"] {
+        .sun-and-moon > .sun {
+            transform: scale(1.75);
+            transition-timing-function: var(--ease-3);
+            transition-duration: .25s;
+        }
+
+        .sun-and-moon > .sun-beams {
+            transform: rotateZ(-25deg);
+            transition-duration: .15s;
+        }
+
+        .sun-and-moon > .moon > circle {
+            transition-delay: .25s;
+            transition-duration: .5s;
+        }
+    }
+}
+
+
