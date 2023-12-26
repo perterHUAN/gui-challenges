@@ -1,0 +1,451 @@
+/*  
+    借助post css 
+        重置一些默认样式
+        定义一些变量
+        给button设置一些样式
+*/
+@import "https://unpkg.com/open-props";
+@import "https://unpkg.com/open-props/normalize.min.css";
+@import "https://unpkg.com/open-props/buttons.min.css";
+
+
+body {
+    /* 
+        对子元素布局 main
+        居中对齐
+    */
+    display: grid;
+    place-content: center;
+    padding-inline: var(--size-5);
+}
+
+main {
+    /* 
+        对子元素布局  div + div + button
+        flex
+        水平排列
+        flex-wrap
+        在小屏幕上如果宽度不够可以换行
+    */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--size-5);
+}
+
+.user {
+    /* 
+        大小
+    */
+    inline-size: var(--size-fluid-7);
+    aspect-ratio: var(--ratio-square);
+
+    border-radius: var(--radius-round);
+    border: var(--border-size-1) solid var(--surface-4);
+
+
+    /* 
+        对子元素布局
+        居中对齐
+    */
+    display: flex;
+    align-items: cener;
+    justify-content: center;
+
+    /* 
+        子元素absolute定位
+    */
+    position: relative;   
+}
+/* 
+    svg,img, video
+    max-inline-size: 100%; 
+    block-size: auto;
+    normalize.css
+
+    这里我们不需要再设置了
+*/
+
+
+
+.user > button {
+    /* 
+        定位
+        absolute
+        右上角上
+    */
+    position: absolute;
+    /* top: 0;
+    right: 0; */
+    inset-block-start: 0;
+    inset-inline-end: 0;
+
+    /* 
+        大小
+    */
+    aspect-ratio: 1;
+    padding: 0.75ch;
+
+
+    border-radius: var(--radius-round);
+
+    
+}
+/* 
+    open-types中 定义了 button中svg的大小
+    这个变量定义在一个button中，前面多加了一个_
+    影响button中的图标大小
+
+    svg
+    inline-size: var(--_icon-size);
+    block-size: var(--_icon-size);
+*/
+svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* 
+    设置 diaglog
+
+*/
+
+dialog {
+    /* 
+        定位
+        fixed
+    */
+    position: fixed;
+    /* 
+        这也是居中的一种方法
+    */
+    inset: 0;
+    margin: auto;
+    
+    /* 
+        去掉dialog默认padding
+    */
+    padding: 0; 
+
+    /* 
+        对子元素布局 form
+        [header]
+        article
+        footer
+
+        grid
+        n行1列
+
+        每行的元素向左侧对齐，而不是拉伸到列宽 
+        （这里虽然只有一个form，设置不设置效果都一样，
+        但是当有多个元素的时候，效果就不同了,
+        align-items: center更适合我们的需求)
+
+        align-items: start        
+
+    */
+    display: grid;
+    gap: var(--size-3);
+    align-items: start;    
+
+
+    /* 
+        颜色及border
+    */
+    background-color: var(--surface-2);
+    color: var(--text-1);
+    border-radius: var(--radius-3);
+    box-shadow: var(--shadow-6);
+
+    /* 
+        dialog元素的大小取决于内容  设置最大宽度 防止在小屏幕上溢出
+    */
+
+    max-inline-size: max(90vw, var(--content-size-3));
+    overflow: hidden;
+
+
+    z-index: var(--layer-important);
+
+
+    /* 
+        过渡效果
+
+        出现和隐藏
+    */
+    transition: opacity .3s ease;
+}
+
+/*  
+    小屏幕 处于屏幕底部
+*/
+@media (max-width: 768px) {
+    dialog#MegaDialog {
+        margin-block-end: 0;
+        border-end-start-radius: 0;
+        border-end-end-radius: 0;
+    }
+}
+    
+
+
+
+dialog form {
+    /* 
+        对子元素布局
+    */
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    
+
+    /* 
+        防止太长，设置max-block-size 为了显示所有内容需要设置一个滚动容器来显示信息
+        
+        不会太宽 因为dialog上设置了max-inline-size 会尽可能换行
+    
+        我觉的 当block-size: 80时上面的 grid-template-rows设置才生效，此时我们
+        有一个1fr的网格高度，但是子元素的大小仍有可能会大于这个大小，设置 max-block-size: 100%;
+        overflow-y: auto; 就成功生成了一个滚动容器
+    */
+    max-block-size: 80vh;
+}
+
+
+dialog form header {
+    /* 
+        对子元素布局
+        section
+            svg
+            h3
+        button
+            svg
+    */
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--size-3);
+
+
+    padding-inline: var(--size-5);
+    padding-block: var(--size-3);
+}
+
+.icon-headline {
+    /* 
+        对子元素布局
+        flex
+       svg
+       h3 
+    */
+
+    display: flex;
+    gap: var(--size-3);
+    align-items: center;
+
+}
+dialog form header button {
+    border-radius: var(--radius-round);
+    aspect-ratio: 1;
+    padding:0.75ch;
+
+    /* 
+        设置button svg
+    */
+    stroke: currentColor;
+    stroke-width: 3px;
+
+}
+
+/* 
+ article
+    section
+    small
+    ...,
+*/
+
+dialog form article {
+    /* 
+        对子元素布局 
+
+    */
+    display: grid;
+    gap: var(--size-3);
+    align-items: start;
+
+    /* 
+        当内容过多时，形成一个滚动区
+    */
+    max-block-size: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    /* 
+        form 的元素都设置padding-inline 且大小都一样 统一
+    */
+    padding-inline: var(--size-5);
+    padding-block: var(--size-3);
+
+
+
+}
+@media (prefers-color-scheme: light) {
+    dialog form article {
+        background: var(--surface-1);
+    }
+}
+
+
+.labelled-input {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--size-3);
+
+}
+@media (max-width: 768px) {
+    .labelled-input > input[type=file]{
+        inline-size: 100%;
+    }
+}
+
+
+/* minidiaglog article 
+*/
+.warning-message {
+    /* 
+        对子元素布局　svg ＋　p
+        对这个svg的大小着重设计一下
+
+    */
+    display: grid;
+    grid-template-columns: var(--size-fluid-3) 1fr;
+    gap: var(--size-3);    
+    align-items: center;
+}
+
+.warning-message > svg {
+    inline-size: 100%;
+    stroke: var(--text-2);
+}
+
+
+dialog form footer {
+    /* 
+        对子元素布局
+        menu
+            button 
+        menu
+            button
+            button
+
+    */
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+    padding-inline: var(--size-5);
+    padding-block: var(--size-3);
+
+}
+
+/* 
+    minidialog 的footer
+    只有一个menu
+    menu
+        button
+        button    
+    
+    靠右侧对齐
+    就需加margin
+
+    */
+
+
+dialog form footer menu:only-child {
+    margin-block-start: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+    dialog :is(header,footer) {
+        background-color: var(--surface-1);
+    }
+}
+
+
+/*  
+     diaglog基本的样式及其子元素的样式设置完了
+     现在着重增强diaglog的样式
+        状态变化
+        动画
+*/
+
+/* 
+    dialog:backdrop
+*/
+dialog[modal-mode="mega"]::backdrop {
+    backdrop-filter: blur(25px);
+}
+
+dialog[modal-mode="mini"]::backdrop {
+    backdrop-filter: none;
+}
+
+dialog::backdrop {
+    transition: backdrop .3s ease;
+}
+
+/* 
+    
+*/
+dialog[loading] {
+    visibility: hidden;
+}
+
+
+
+/* 
+    not open
+*/
+dialog:not([open]) {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* open
+    禁止滚动
+*/
+html:has(dialog[open][modal-mode="mega"]) {
+  overflow: hidden;
+}
+
+/* 
+    动画
+*/
+
+@media (prefers-reduced-motion: no-preference) {
+    /* 
+        open => not open
+    */
+    dialog:not([open]) {
+        animation: var(--animation-scale-down) forwards;
+        animation-timing-function: var(--ease-squish-3);
+    }
+
+    dialog[open] {
+        animation: var(--animation-slide-in-up) forwards;
+    }
+
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 768px) {
+    dialog[modal-mode="mega"]:not([open]) {
+        animation: var(--animation-slide-out-down) forwards;
+        animation-timing-function: var(--ease-squish-2); 
+    }
+
+}
