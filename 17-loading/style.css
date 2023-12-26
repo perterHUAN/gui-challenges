@@ -1,0 +1,273 @@
+/* 
+    使用open-props中的一些样式和定义的变量
+*/
+/* 
+    这里主要定义了一些变量 （设计系统）
+*/
+@import "https://unpkg.com/open-props";
+
+/* 
+    定义了一些重置样式
+*/
+@import "https://unpkg.com/open-props/normalize.min.css";
+/* 
+    针对button定义了一些样式
+*/
+@import "https://unpkg.com/open-props/buttons.min.css";
+
+
+
+body {
+    /* 
+        对子元素的布局
+    */
+
+    display: grid;
+    place-content: center;
+}
+
+main {
+    /* 
+        占据视口的上半部分
+        最好是用min-block-size，如果用block-size会溢出的
+    */
+    min-block-size: 80vh;
+
+    /* 
+        对子元素的布局    
+        居中对齐
+    */
+    display: grid;
+    place-content: center;
+    gap: var(--size-3);
+
+    /* 
+        文字居中对齐
+    */
+
+    text-align: center;
+}
+
+.card {
+    /* 
+        对子元素布局 label
+        一列n行 这里的n=1
+        网格列宽度和自身的宽度(content-width)一样，每个网格中的元素尽量拉伸
+        
+    */
+    display: grid;
+    gap: var(--size-3);
+
+
+    padding: var(--size-4) var(--size-6);
+
+    /*  
+        这里只设置了inline-size
+    */
+    max-inline-size: 80vw;
+    inline-size: var(--size-content-2);
+
+    background-color: white;
+    /* 
+        var(--radius-round) 一个很大的数
+    */
+    border-radius: var(--radius-round);
+    border: 1px solid var(--surface-2);
+    box-shadow: var(--shadow-5);
+}
+
+@media (prefers-color-scheme: dark) {
+    .card {
+        background: var(--surface-2)
+    }
+}
+
+label {
+    /* 
+        对子元素布局
+        一列n行 宽度拉伸到网格列宽 (转换inline元素布局的方法)
+    */
+
+    display: grid;
+    
+}
+
+.sr-only {
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+}
+
+
+.card progress {
+    /* 
+        宽度充斥父元素
+    */
+    inline-size: 100%;
+
+    /* 
+        设置 track, progress 颜色 大小 过渡 动画相关的变量
+
+    */
+    --track: hsl(228 100% 90%);
+    /* height  */
+    --track-size: min(10px, 1ex);    
+
+    --progress: hsl(228 100% 50%);
+    /* 
+        很大的数
+    */
+    --radius: 1e3px;
+
+    /* 
+        不确定状态下 track
+    */
+
+    --indeterminate-track: linear-gradient(to right,
+        var(--track) 45%,
+        var(--progress) 0,
+        var(--progress) 55%,
+        var(--track) 0%
+    );
+
+    /* 
+    
+    */
+    --indeterminate-track-size:225% 100%;
+
+    --indeterminate-track-animation: progress-loading 2s infinite ease;
+
+
+
+    /* 
+        消除该组件默认样式
+
+    */
+    appearance: none;
+    border: none;
+
+
+    height: var(--track-size);
+    border-radius: var(--radius);
+    overflow: hidden;
+
+    /* 
+        伪元素定位
+     */
+    position: relative;
+}
+
+@media (prefers-color-scheme: dark) {
+    .card progress {
+        --track: hsl(228 20% 30%);
+        --progress: hsl(228 100% 75%);
+    }
+}
+.card progress:focus-visible {
+    outline-color: var(--progress);
+}
+/* 
+    [value] 状态
+
+*/
+
+/* 
+    safari/chrome
+*/
+.card progress[value]::-webkit-progress-bar {
+    background-color: var(--track);
+}
+
+.card progress[value]::-webkit-progress-value {
+    background-color: var(--progress);
+    transition: inline-size .25s ease-out; 
+}
+
+/* firefox 省略 */
+
+
+/* 
+    indeterminate状态    
+*/
+
+/* 在chrome没用，得借助伪元素 */
+/* .card progress:indeterminate::-webkit-progress-bar {
+    background: var(--indeterminate-track);
+    background-size: var(--indeterminate-track-size);
+    background-position: right; 
+    animation: var(--indeterminate-track-animation);
+} */
+
+.card progress:indeterminate::after {
+    content: "";
+    inset: 0;
+    position: absolute;
+    background: var(--indeterminate-track);
+    background-size: var(--indeterminate-track-size);
+    background-position: right; 
+    animation: var(--indeterminate-track-animation);
+}
+
+@keyframes progress-loading {
+    50% {
+        background-position: left;
+    }
+}
+
+
+/* 
+    complet
+    没有包含max，默认为1 检查value是否为1
+    包含max 100 检查value是否等于100
+    添加一个对号在进度条的终点
+    */
+
+progress:not([max])[value='1']::before,
+progress[max='100'][value='100']::before {
+    content: "✓";
+
+    position: absolute;
+    inset-block: 0;
+    /* 方向改变的时候依然是在进度条的终点，逻辑属性的优点 */
+    inset-inline: auto 0;
+
+    display: flex;
+    align-items: center;
+    /* 
+        justify-content这里没有用，没有剩余空间 inset-inline: auto 0;
+    */
+
+
+    padding-inline-end: max(calc(--track-size) / 4, 3px);
+
+    color: white;
+    font-size: calc(var(--track-size) / 1.25);
+}
+
+
+/* 
+    对button group
+
+*/
+
+.button-group {
+    /* 
+        对子元素布局 button
+        flex
+        wrap
+        屏幕小的时候可以换行
+        button 是inline也不使用flex也能换行
+        主要是方便设置间距
+    */
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--size-3);
+
+    padding: var(--size-4) var(--size-6);
+
+}

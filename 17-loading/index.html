@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loading</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main id="loading-zone">
+      <p>Loading Level</p>
+      <div class="card">
+        <!-- 
+                隐式关联
+             -->
+        <label>
+          <span class="sr-only">loading progress</span>
+          <!-- 
+                    设置tabindex，可以使用js聚焦
+                 -->
+          <progress
+            indeterminate
+            aria-labelledby="loading-zone"
+            tabindex="-1"
+          ></progress>
+        </label>
+      </div>
+    </main>
+    <div class="button-group">
+      <button id="increase" onclick="increase()">increase</button>
+      <button id="decrease" onclick="decrease()">decrease</button>
+      <button id="complete" type="submit" onclick="complete()">complete</button>
+      <button id="reset" type="reset" onclick="reset()">reset</button>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
