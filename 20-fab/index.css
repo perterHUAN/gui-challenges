@@ -1,0 +1,19 @@
+@import './fab.css';
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+html {
+    block-size: 100%;
+    color-scheme: light;
+    @media (prefers-color-scheme: dark) {
+        color-scheme: dark;
+    }
+}
+
+body {
+    min-block-size: 100%;
+}

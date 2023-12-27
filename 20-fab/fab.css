@@ -1,0 +1,146 @@
+.fabs {
+  /* 
+        对子元素布局 button + button
+        竖着排列
+        居中对齐
+    */
+  display: flex;
+  /*  视觉上的顺序改变了，但是dom顺序，focus顺序没有改变
+        重要的元素先被聚焦，视觉上更突出 
+     */
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 1ch;
+
+  /* 
+        定位
+    */
+  --_viewport_margin: 5vmin;
+  position: fixed;
+  /* 
+        ltr, rtl都合适
+    */
+  inset-inline: auto var(--_viewport_margin);
+  inset-block: auto var(--_viewport_margin);
+  /* 
+        防止被覆盖
+    */
+  z-index: 10;
+}
+
+.fab {
+  /*  去掉button的一些默认样式 
+     */
+  appearance: none;
+  border: none;
+
+  font: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+
+  user-select: none;
+  touch-action: manipulation;
+  /* 
+    对子元素定位
+  */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  /* 
+        定义一些变量
+    */
+
+  --_size: 2rem;
+
+  --_bg-light: #e64980;
+  --_bg-light-hover: #d6336c;
+  --_bg-dark: #f783ac;
+  --_bg-dark-hover: #faa2c1;
+  --_bg: var(--_bg-light);
+
+  --_fg-light: white;
+  --_fg-dark: black;
+  --_fg: var(--_fg-light);
+
+  --_motion-reduced: background-color 0.3s ease;
+  --_motion-ok: var(--_motion-reduced), transform 0.2s ease,
+    outline-offset 145ms ease;
+  --_transition: var(--_motion-reduced);
+
+  /* 
+        大小
+    */
+  padding: calc(var(--_size) / 2);
+
+  /* 
+        形状
+    */
+  border-radius: 50%;
+  aspect-ratio: 1;
+
+  /* 
+        颜色
+    */
+  background-color: var(--_bg);
+  color: var(--_fg);
+  outline-color: var(--_bg);
+
+  /* 
+    变换
+  */
+  transition: var(--_transition);
+  @media (prefers-reduced-motion: no-preference) {
+    --_transition: var(--_motion-ok);
+  }
+
+  /* 
+    更新变量
+  */
+
+  @media (prefers-color-scheme: dark) {
+    --_bg: var(--_bg-dark);
+    --_fg: var(--_fg-dark);
+  }
+
+  &:is(:hover, :active, :focus-visible) {
+    --_bg: var(--_bg-light-hover);
+    @media (prefers-color-scheme: dark) {
+      --_bg: var(--_bg-dark-hover);
+    }
+  }
+
+  /* 
+    状态变换
+  */
+  &:focus-visible:not(:active) {
+    outline-offset: 3px;
+  }
+  /* 
+    覆盖样式
+  */
+  &.mini {
+    --_size: 1.25rem;
+  }
+
+  /* 
+    子元素 svg
+  */
+  & > svg {
+    inline-size: var(--_size);
+    max-inline-size: 100%;
+    block-size: var(--_size);
+    stroke-width: 2px;
+
+    fill: none;
+    stroke: currentColor;
+
+    @media (prefers-reduced-motion: no-preference) {
+      will-change: transform;
+      transition: transform 0.5s ease;
+    }
+  }
+  &[data-icon="plus"]:hover > svg {
+    transform: rotate(0.25turn);
+  }
+}
