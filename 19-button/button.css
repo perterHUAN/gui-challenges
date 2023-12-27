@@ -1,0 +1,503 @@
+/* 
+    自定义button样式
+    暗色调和浅色调主题
+    不同类型button有不同的风格
+*/
+
+/* 
+    input[type=file]不是button，它的伪元素::file-selector-button才是
+    而且伪元素不可以放在:where伪类中
+
+*/
+:where(button, input[type="button"], input[type="reset"], input[type="submit"]),
+:where(input[type="file"])::file-selector-button {
+  /*
+        定义一些button共享的变量
+    */
+
+  /* 
+        静态的变量 不会改变的   （可以想象成一个图，这些变量是那些入度为0的节点）
+        --accent-light, --accent-dark 
+
+        会改变的变量
+        --accent: var(--accent-light)
+        dark theme
+        --accent: var(--accent-right)
+    */
+
+  /* 
+        强调色
+    */
+  --_accent-light: hsl(210deg 100% 40%);
+  --_accent-dark: hsl(210deg 50% 70%);
+  --_accent: var(--_accent-light);
+
+  /* 
+        浅色调下文字比较暗，背景比较亮
+        暗色调下文字比较亮，背景比较暗
+    */
+  --_text-light: hsl(210deg 10% 30%);
+  --_text-dark: hsl(210deg 5% 95%);
+  --_text: var(--_text-light);
+
+  /* 
+        背景
+    */
+  --_bg-light: hsl(0deg 0% 100%);
+  --_bg-dark: hsl(210deg 9% 31%);
+  --_bg: var(--_bg-light);
+
+  --_input-well-light: hsl(210 16% 87%);
+  --_input-well-dark: hsl(204 10% 10%);
+  --_input-well: var(--_input-well-light);
+
+  --_padding-inline: 1.75ch;
+  --_padding-block: 0.75ch;
+
+  --_border-radius: 0.5ch;
+  --_border-light: hsl(210 14% 89%);
+  --_border-dark: var(--_bg-dark);
+  --_border: var(--_border-light);
+
+  --_highlight-size: 0;
+  --_highlight-light: hsl(210 10% 71% / 25%);
+  --_highlight-dark: hsl(210 10% 5% / 25%);
+  --_highlight: var(--_highlight-light);
+
+  --_ink-shadow-light: 0 1px 0 var(--_border-light);
+  --_ink-shadow-dark: 0 1px 0 hsl(210 11% 15%);
+  --_ink-shadow: var(--_ink-shadow-light);
+
+  --_icon-size: 2ch;
+  --_icon-color: var(--_accent);
+
+  -_shadow-color-light: 220 3% 15%;
+  --_shadow-color-dark: 220 40% 2%;
+  --_shadow-color: var(--_shadow-color-light);
+  --_shadow-strength-light: 1%;
+  --_shadow-strength-dark: 25%;
+  --_shadow-strength: var(--_shadow-strength-light);
+  --_shadow-1: 0 1px 2px -1px hsl(var(--_shadow-color) /
+        calc(var(--_shadow-strength) + 9%));
+  --_shadow-2: 0 3px 5px -2px hsl(var(--_shadow-color) /
+          calc(var(--_shadow-strength) + 3%)),
+    0 7px 14px -5px hsl(var(--_shadow-color) /
+          calc(var(--_shadow-strength) + 5%));
+
+  --_shadow-depth-light: 0 1px var(--_border-light);
+  --_shadow-depth-dark: 0 1px var(--_bg-dark);
+  --_shadow-depth: var(--_shadow-depth-light);
+
+  --_transition-motion-reduce: ;
+  --_transition-motion-ok: box-shadow 145ms ease, outline-offset 145ms ease;
+  --_transition: var(--_transition-motion-reduce);
+
+  /* 
+    font, letter-space不使用默认指定的，而是显示由父元素继承，和其他元素统一
+  */
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: 1.5;
+  border-radius: var(--_border-radius);
+
+  /* 
+    什么时候更改这些css变量？
+  */
+  @media (prefers-color-scheme: dark) {
+    --_bg: var(--_bg-dark);
+    --_text: var(--_text-dark);
+    --_border: var(--_border-dark);
+    --_accent: var(--_accent-dark);
+    --_highlight: var(--_highlight-dark);
+    --_input-well: var(--_input-well-dark);
+    --_ink-shadow: var(--_ink-shadow-dark);
+    --_shadow-depth: var(--_shadow-depth-dark);
+    --_shadow-color: var(--_shadow-color-dark);
+    --_shadow-strength: var(--_shadow-strength-dark);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    --_transition: var(--_transition-motion-ok);
+  }
+}
+
+/* 
+    变量定义好了，我们来使用这些变量设计我们button的样式
+
+    基本样式
+*/
+
+:where(button, input[type="button"], input[type="reset"], input[type="submit"]),
+:where(input[type="file"])::file-selector-button {
+  cursor: pointer;
+  touch-action: manipulation;
+
+  font-size: var(--_size, 1rem);
+  background-color: var(--_bg);
+  color: var(--_text);
+  border: 2px solid var(--_border);
+  box-shadow: var(--_shadow-2), var(--_shadow-depth),
+    0 0 0 var(--_highlight-size) var(--_highlight);
+  text-shadow: var(--_ink-shadow);
+  transition: var(--_transition);
+
+  font-weight: 700;
+  padding-block: var(--_padding-block);
+  padding-inline: var(--_padding-inline);
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+
+  /* 
+        对子元素布局
+        自身依然保持inline
+        居中
+        文字居中
+    */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1ch;
+}
+
+/* 
+   button > svg icon 
+*/
+:where(button, input[type="button"], input[type="reset"], input[type="submit"])
+  > :where(svg, [data-icon]) {
+  inline-size: var(--_icon-size);
+  block-size: var(--_icon-size);
+  stroke: var(--_icon-color);
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(var(--_ink-shadow));
+
+  flex-shrink: 0;
+}
+
+/* 
+    disabled
+*/
+:where(
+    button,
+    input[type="button"],
+    input[type="reset"],
+    input[type="submit"]
+  )[disabled] {
+  /* 
+        自定义背景颜色、文字颜色 覆盖掉共享的样式
+    */
+  --_bg: none;
+  --_text-light: hsl(210deg 7% 40%);
+  --_text-dark: hsl(210deg 11% 77%);
+
+  cursor: not-allowed;
+  box-shadow: var(--_shadow-1);
+}
+
+/* 
+    focus not active
+    focus(outline-offset: 5px)  -> (space) active (outline-offset: 0px)
+*/
+:where(button, input):where(:not(:active)):focus-visible {
+  outline-offset: 5px;
+}
+/* 
+    hover not active
+
+*/
+
+:where(
+    button,
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"]
+  ):where(:not(:active):hover) {
+  --_highlight-size: 0.5rem;
+}
+
+/* 
+    submit 
+    type=submit
+    form button:not([type],[disabled])
+*/
+:where([type="submit"], form button:not([type], [disabled])) {
+  --_text: var(--_accent);
+}
+
+/* 
+    reset
+*/
+
+:where([type="reset"]) {
+  --_border-light: hsl(0 100% 83%);
+  --_highlight-light: hsl(0 100% 89% / 20%);
+  --_text-light: hsl(0 80% 50%);
+  --_text-dark: hsl(0 100% 89%);
+}
+
+:where([type="reset"]):focus-visible{
+    outline-color: currentColor;
+}
+
+/* 
+    file input
+*/
+:where(
+    [type="file"]
+){
+    inline-size: 100%;
+    max-inline-size: max-content;
+    
+    background-color:var(--_input-well);
+}
+
+
+:where(input[type="button"]),
+:where(input[type="file"])::file-selector-button {
+    /* 
+        去掉默认样式 
+    */
+    appearance: none;
+}
+
+
+:where(
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  input[type="file"]
+),
+:where(input[type="file"])::file-selector-button {
+  --_accent-light: hsl(210 100% 40%);
+  --_accent-dark: hsl(210 50% 70%);
+  --_accent: var(--_accent-light);
+
+  --_text-light: hsl(210 10% 30%);
+  --_text-dark: hsl(210 5% 95%);
+  --_text: var(--_text-light);
+  
+  --_bg-light: hsl(0 0% 100%);
+  --_bg-dark: hsl(210 9% 31%);
+  --_bg: var(--_bg-light);
+
+  --_input-well-light: hsl(210 16% 87%);
+  --_input-well-dark: hsl(204 10% 10%);
+  --_input-well: var(--_input-well-light);
+
+  --_padding-inline: 1.75ch;
+  --_padding-block: .75ch;
+  
+  --_border-radius: .5ch;
+  --_border-light: hsl(210 14% 89%);
+  --_border-dark: var(--_bg-dark);
+  --_border: var(--_border-light);
+  
+  --_highlight-size: 0;
+  --_highlight-light: hsl(210 10% 71% / 25%);
+  --_highlight-dark: hsl(210 10% 5% / 25%);
+  --_highlight: var(--_highlight-light);
+  
+  --_ink-shadow-light: 0 1px 0 var(--_border-light);
+  --_ink-shadow-dark: 0 1px 0 hsl(210 11% 15%);
+  --_ink-shadow: var(--_ink-shadow-light);
+  
+  --_icon-size: 2ch;
+  --_icon-color: var(--_accent);
+
+  --_shadow-color-light: 220 3% 15%;
+  --_shadow-color-dark: 220 40% 2%;
+  --_shadow-color: var(--_shadow-color-light);
+  --_shadow-strength-light: 1%;
+  --_shadow-strength-dark: 25%;
+  --_shadow-strength: var(--_shadow-strength-light);
+  --_shadow-1: 0 1px 2px -1px hsl(var(--_shadow-color)/calc(var(--_shadow-strength) + 9%));
+  --_shadow-2: 0 3px 5px -2px hsl(var(--_shadow-color)/calc(var(--_shadow-strength) + 3%)),0 7px 14px -5px hsl(var(--_shadow-color)/calc(var(--_shadow-strength) + 5%));
+  
+  --_shadow-depth-light: 0 1px var(--_border-light);
+  --_shadow-depth-dark: 0 1px var(--_bg-dark);
+  --_shadow-depth: var(--_shadow-depth-light);
+
+  --_transition-motion-reduce: ;
+  --_transition-motion-ok:
+    box-shadow 145ms ease,
+    outline-offset 145ms ease
+  ;
+  --_transition: var(--_transition-motion-reduce);
+
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: 1.5;
+  border-radius: var(--_border-radius);
+}
+
+@media (prefers-color-scheme: dark) {
+  :where(
+    button,
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"],
+    input[type="file"]
+  ),
+  :where(input[type="file"])::file-selector-button {
+    --_bg: var(--_bg-dark);
+    --_text: var(--_text-dark);
+    --_border: var(--_border-dark);
+    --_accent: var(--_accent-dark);
+    --_highlight: var(--_highlight-dark);
+    --_input-well: var(--_input-well-dark);
+    --_ink-shadow: var(--_ink-shadow-dark);
+    --_shadow-depth: var(--_shadow-depth-dark);
+    --_shadow-color: var(--_shadow-color-dark);
+    --_shadow-strength: var(--_shadow-strength-dark);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(
+    button,
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"],
+    input[type="file"]
+  ),
+  :where(input[type="file"])::file-selector-button {
+    --_transition: var(--_transition-motion-ok);
+  }
+}
+
+:where(
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"]
+),
+:where(input[type="file"])::file-selector-button {
+  cursor: pointer;
+  touch-action: manipulation;
+
+  font-size: var(--_size, 1rem);
+  background: var(--_bg);
+  color: var(--_text);
+  border: 2px solid var(--_border);
+  box-shadow: 
+    var(--_shadow-2),
+    var(--_shadow-depth),
+    0 0 0 var(--_highlight-size) var(--_highlight)
+  ;
+  text-shadow: var(--_ink-shadow);
+  transition: var(--_transition);
+  
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 1ch;
+  
+  font-weight: 700;
+  padding-block: var(--_padding-block);
+  padding-inline: var(--_padding-inline);
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* icons */
+:where(
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"]
+) > :where(svg, [data-icon]) {
+  block-size: var(--_icon-size);
+  inline-size: var(--_icon-size);
+  stroke: var(--_icon-color);
+  filter: drop-shadow(var(--_ink-shadow));
+
+  flex-shrink: 0;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* focus */
+:where(button, input):where(:not(:active)):focus-visible {
+  outline-offset: 5px;
+}
+
+/* pressing */
+:where(
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"]
+):where(:not(:active):hover) {
+  --_highlight-size: .5rem;
+}
+
+/* disabled */
+:where(
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"]
+)[disabled] {
+  --_bg: none;
+  --_text-light: hsl(210 7% 40%);
+  --_text-dark: hsl(210 11% 71%);
+
+  cursor: not-allowed;
+  box-shadow: var(--_shadow-1);
+}
+
+/* adaptive indigo text */
+:where(
+  [type="submit"], 
+  form button:not([type],[disabled])
+) {
+  --_text: var(--_accent);
+} 
+
+/* red reset */
+:where([type="reset"]) {
+  --_border-light: hsl(0 100% 83%);
+  --_highlight-light: hsl(0 100% 89% / 20%);
+  --_text-light: hsl(0 80% 50%);
+  --_text-dark: hsl(0 100% 89%);
+}
+
+:where([type="reset"]):focus-visible {
+  outline-color: currentColor;
+}
+
+/* file input */
+:where(input[type="file"]) {
+  inline-size: 100%;
+  max-inline-size: max-content;
+  background-color: var(--_input-well);
+}
+
+:where(input[type="button"]),
+:where(input[type="file"])::file-selector-button {
+  appearance: none;
+}
+
+:where(input[type="file"])::file-selector-button {
+  margin-inline-end: var(--_padding-inline);
+}
+
+/* special dark theme styles */
+@media (prefers-color-scheme: dark) {
+  :where(
+    [type="submit"],
+    [type="reset"],
+    [disabled],
+    form button:not([type="button"])
+  ) {
+    --_bg: var(--_input-well);
+  }
+}

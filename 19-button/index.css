@@ -1,0 +1,112 @@
+@import "./button.css";
+@import "./button.custom.css";
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+html {
+  block-size: 100%;
+
+  /* 
+        改变默认的background-color
+    */
+  background-color: hsl(210deg 17% 98%);
+  @media (prefers-color-scheme: dark) {
+    /* 
+            暗色调 降低饱和度和亮度
+        */
+    background-color: hsl(210deg 11% 15%);
+  }
+}
+
+body {
+  min-block-size: 100%;
+
+  /* 
+        对子元素布局 section + article + section + form
+        居中
+        方向 竖直排列
+    */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5vmin;
+
+  /* 
+        自身的样式
+    */
+  /* 
+        padding的大小fluid 和视口的大小有关系
+    */
+  padding: 5vmin;
+
+  @media (max-width: 720px) {
+    /* 
+            小屏幕上 宽度变小，内联元素换行，长度就变大
+            离顶部和底部就比较近
+            增加padding-block
+
+            多添加一点padding-block没有关系
+            但是多添加一点padding-inline 就不行了 会把内容的宽度挤的很小
+        */
+    padding-block: 10vim;
+  }
+}
+
+section {
+  /* 
+        对子元素布局
+        竖直排列
+        gap
+    */
+  display: grid;
+  gap: 1ch;
+
+  /* 
+    section >     h1, p 文字居中
+    */
+  text-align: center;
+}
+
+.fluid-flex {
+  /* 
+        对子元素布局 buttons
+        一行显示，一行显示不下就换行
+        水平居中
+        垂直顶部对齐
+    */
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1ch;
+
+  /* 
+        自身的样式
+    */
+  padding: 2ch;
+}
+
+/* 
+    设计一下form的样式
+*/
+form {
+  background-color: hsl(210deg 16% 93%);
+  border: 1px solid hsl(210deg 14% 89%);
+  border-radius: 0.5ch;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: hsl(210deg 11% 20%);
+    border: 1px solid hsl(210deg 9% 31%);
+  }
+}
+
+/* 添加下划线 波浪线 */
+.red-squigly {
+  text-decoration: red underline wavy;
+}
